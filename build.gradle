@@ -1,0 +1,16 @@
+plugins {
+    id 'java'
+}
+
+group 'uk.gov.hmcts.reform'
+version '0.0.0'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'org.assertj', name: 'assertj-core', version: '3.11.0'
+}
