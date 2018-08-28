@@ -3,6 +3,8 @@ plugins {
     id 'java-library'
     id 'maven-publish'
     id 'com.jfrog.bintray' version '1.8.4'
+    id 'checkstyle'
+    id 'pmd'
 }
 
 group 'uk.gov.hmcts.reform'
@@ -17,6 +19,25 @@ repositories {
 dependencies {
     testCompile group: 'org.assertj', name: 'assertj-core', version: '3.11.0'
 }
+
+// region static code analysis
+
+checkstyle {
+    maxWarnings = 0
+    toolVersion = '8.10.1'
+    // need to set configDir to rootDir otherwise submodule will use submodule/config/checkstyle
+    configDir = new File(rootDir, 'config/checkstyle')
+}
+
+pmd {
+    toolVersion = "6.5.0"
+    ignoreFailures = true
+    sourceSets = [sourceSets.main, sourceSets.test]
+    reportsDir = file("$project.buildDir/reports/pmd")
+    ruleSetFiles = files("config/pmd/ruleset.xml")
+}
+
+// endregion
 
 // region publishing
 
