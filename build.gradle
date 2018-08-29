@@ -5,6 +5,7 @@ plugins {
     id 'com.jfrog.bintray' version '1.8.4'
     id 'checkstyle'
     id 'pmd'
+    id 'jacoco'
 }
 
 group 'uk.gov.hmcts.reform'
@@ -35,6 +36,17 @@ pmd {
     sourceSets = [sourceSets.main, sourceSets.test]
     reportsDir = file("$project.buildDir/reports/pmd")
     ruleSetFiles = files("config/pmd/ruleset.xml")
+}
+
+// endregion
+
+// region test coverage
+
+jacocoTestReport {
+    reports {
+        xml.enabled = true
+        csv.enabled = false
+    }
 }
 
 // endregion

@@ -16,6 +16,10 @@ cache:
 script:
 - ./gradlew test
 
+after_success:
+- ./gradlew jacocoTestReport
+- bash <(curl -s https://codecov.io/bash)
+
 deploy:
 - provider: script
   script: ./gradlew bintrayUpload
