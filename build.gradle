@@ -88,10 +88,10 @@ bintray {
     publish = true
     pkg {
         repo = 'hmcts-maven'
-        name = 'ccd-event-handler'
+        name = 'bulk-scan-ccd-event-handler'
         userOrg = 'hmcts'
         licenses = ['MIT']
-        vcsUrl = 'https://github.com/hmcts/ccd-event-handler-lib'
+        vcsUrl = 'https://github.com/hmcts/bulk-scan-ccd-event-handler-lib'
         version {
             name = project.version
         }
