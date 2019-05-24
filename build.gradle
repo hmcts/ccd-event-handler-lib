@@ -75,7 +75,7 @@ publishing {
             artifact sourcesJar
             artifact javadocJar
             groupId project.group
-            artifactId 'ccd-event-handler'
+            artifactId 'bulk-scan-ccd-event-handler'
             version project.version
         }
     }
