@@ -25,13 +25,13 @@ dependencies {
 
 checkstyle {
     maxWarnings = 0
-    toolVersion = '8.10.1'
+    toolVersion = '8.21'
     // need to set configDir to rootDir otherwise submodule will use submodule/config/checkstyle
     configDir = new File(rootDir, 'config/checkstyle')
 }
 
 pmd {
-    toolVersion = "6.5.0"
+    toolVersion = "6.15.0"
     ignoreFailures = true
     sourceSets = [sourceSets.main, sourceSets.test]
     reportsDir = file("$project.buildDir/reports/pmd")
