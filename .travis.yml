@@ -11,6 +11,7 @@ cache:
 
 script:
 - ./gradlew test
+- if [ "$TRAVIS_EVENT_TYPE" == "cron" ]; then ./gradlew dependencyCheckAnalyze; fi
 
 after_success:
 - ./gradlew jacocoTestReport
