@@ -49,12 +49,14 @@ public class ExceptionRecordEventHandlerTest {
         TransformationResult transformationResult = okResult();
 
         given(s2sTokenSupplier.get()).willReturn(s2sToken);
+        given(ccdClient.createCase(any(), any(), any())).willReturn("new-case-id");
         given(transformer.transform(req.exceptionRecord)).willReturn(transformationResult);
 
         // when
         ExceptionRecordResponse resp = handler.handle(req, idamToken);
 
         // then
+        assertThat(resp.caseId).isEqualTo("new-case-id");
         assertThat(resp.errors).isEmpty();
         assertThat(resp.warnings).isEmpty();
 
@@ -75,6 +77,7 @@ public class ExceptionRecordEventHandlerTest {
         ExceptionRecordResponse resp = handler.handle(req, "idam-token");
 
         // then
+        assertThat(resp.caseId).isNull();
         assertThat(resp.errors).containsExactly("err1", "err2");
         assertThat(resp.warnings).containsExactly("warn1", "warn2");
 
@@ -95,6 +98,7 @@ public class ExceptionRecordEventHandlerTest {
         ExceptionRecordResponse resp = handler.handle(req, "idam-token");
 
         // then
+        assertThat(resp.caseId).isNull();
         assertThat(resp.errors).isEmpty();
         assertThat(resp.warnings).containsExactly("warn1", "warn2");
 
@@ -111,12 +115,14 @@ public class ExceptionRecordEventHandlerTest {
         TransformationResult transformationResult = warningResult(asList("warn1", "warn2"));
 
         given(s2sTokenSupplier.get()).willReturn(s2sToken);
+        given(ccdClient.createCase(any(), any(), any())).willReturn("new-case-id");
         given(transformer.transform(req.exceptionRecord)).willReturn(transformationResult);
 
         // when
         ExceptionRecordResponse resp = handler.handle(req, idamToken);
 
         // then
+        assertThat(resp.caseId).isEqualTo("new-case-id");
         assertThat(resp.errors).isEmpty();
         assertThat(resp.warnings).isEmpty(); // warnings removed!
 

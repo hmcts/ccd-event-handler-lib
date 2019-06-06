@@ -6,7 +6,10 @@ import uk.gov.hmcts.reform.bulkscanccdeventhandler.handler.model.ExceptionRecord
 import uk.gov.hmcts.reform.bulkscanccdeventhandler.transformer.ExceptionRecordToCaseTransformer;
 import uk.gov.hmcts.reform.bulkscanccdeventhandler.transformer.model.TransformationResult;
 
+import java.util.List;
 import java.util.function.Supplier;
+
+import static java.util.Collections.emptyList;
 
 public class ExceptionRecordEventHandler {
 
@@ -30,9 +33,11 @@ public class ExceptionRecordEventHandler {
         TransformationResult result = transformer.transform(req.exceptionRecord);
 
         if (shouldCreateCase(result, req.ignoreWarnings)) {
-            ccdClient.createCase(result.data, idamToken, s2sTokenSupplier.get());
+            String caseId = ccdClient.createCase(result.data, idamToken, s2sTokenSupplier.get());
+            return ok(caseId);
+        } else {
+            return errors(result.errors, result.warnings);
         }
-        return new ExceptionRecordResponse(result.errors, result.warnings);
     }
 
     private boolean shouldCreateCase(TransformationResult result, boolean ignoreWarnings) {
@@ -45,4 +50,11 @@ public class ExceptionRecordEventHandler {
         }
     }
 
+    private ExceptionRecordResponse ok(String caseId) {
+        return new ExceptionRecordResponse(caseId, emptyList(), emptyList());
+    }
+
+    private ExceptionRecordResponse errors(List<String> errors, List<String> warnings) {
+        return new ExceptionRecordResponse(null, errors, warnings);
+    }
 }
