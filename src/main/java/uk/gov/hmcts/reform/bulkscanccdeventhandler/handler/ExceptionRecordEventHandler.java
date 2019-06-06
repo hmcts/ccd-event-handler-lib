@@ -4,7 +4,6 @@ import uk.gov.hmcts.reform.bulkscanccdeventhandler.ccd.CcdClient;
 import uk.gov.hmcts.reform.bulkscanccdeventhandler.handler.model.ExceptionRecordRequest;
 import uk.gov.hmcts.reform.bulkscanccdeventhandler.handler.model.ExceptionRecordResponse;
 import uk.gov.hmcts.reform.bulkscanccdeventhandler.transformer.ExceptionRecordToCaseTransformer;
-import uk.gov.hmcts.reform.bulkscanccdeventhandler.transformer.model.Status;
 import uk.gov.hmcts.reform.bulkscanccdeventhandler.transformer.model.TransformationResult;
 
 import java.util.List;
