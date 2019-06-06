@@ -4,8 +4,10 @@ import uk.gov.hmcts.reform.bulkscanccdeventhandler.ccd.CcdClient;
 import uk.gov.hmcts.reform.bulkscanccdeventhandler.handler.model.ExceptionRecordRequest;
 import uk.gov.hmcts.reform.bulkscanccdeventhandler.handler.model.ExceptionRecordResponse;
 import uk.gov.hmcts.reform.bulkscanccdeventhandler.transformer.ExceptionRecordToCaseTransformer;
+import uk.gov.hmcts.reform.bulkscanccdeventhandler.transformer.model.Status;
 import uk.gov.hmcts.reform.bulkscanccdeventhandler.transformer.model.TransformationResult;
 
+import java.util.List;
 import java.util.function.Supplier;
 
 import static java.util.Collections.emptyList;
@@ -33,18 +35,22 @@ public class ExceptionRecordEventHandler {
         switch (result.status) {
             case OK:
                 ccdClient.createCase(result.data, idamToken, s2sTokenSupplier.get());
-                return new ExceptionRecordResponse(emptyList(), emptyList());
+                return resp(emptyList(), emptyList());
             case WARNINGS:
                 if (req.ignoreWarnings) {
                     ccdClient.createCase(result.data, idamToken, s2sTokenSupplier.get());
-                    return new ExceptionRecordResponse(emptyList(), emptyList());
+                    return resp(emptyList(), emptyList());
                 } else {
-                    return new ExceptionRecordResponse(emptyList(), result.warnings);
+                    return resp(emptyList(), result.warnings);
                 }
             case ERRORS:
-                return new ExceptionRecordResponse(result.errors, result.warnings);
+                return resp(result.errors, result.warnings);
             default:
                 throw new IllegalArgumentException("Unhandled status " + result.status);
         }
+    }
+
+    private ExceptionRecordResponse resp(List<String> errors, List<String> warnings) {
+        return new ExceptionRecordResponse(errors, warnings);
     }
 }
