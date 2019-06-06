@@ -1,7 +1,6 @@
 package uk.gov.hmcts.reform.bulkscanccdeventhandler.handler.testutils.sampledata;
 
 import com.google.common.collect.ImmutableMap;
-import uk.gov.hmcts.reform.bulkscanccdeventhandler.transformer.model.Status;
 import uk.gov.hmcts.reform.bulkscanccdeventhandler.transformer.model.TransformationResult;
 
 import java.util.List;
@@ -11,24 +10,22 @@ import static java.util.Collections.emptyList;
 public final class SampleTransformationResult {
 
     public static TransformationResult okResult() {
-        return transformationResult(Status.OK, emptyList(), emptyList());
+        return transformationResult(emptyList(), emptyList());
     }
 
     public static TransformationResult warningResult(List<String> warnings) {
-        return transformationResult(Status.WARNINGS, warnings, emptyList());
+        return transformationResult(warnings, emptyList());
     }
 
     public static TransformationResult errorResult(List<String> warnings, List<String> errors) {
-        return transformationResult(Status.ERRORS, warnings, errors);
+        return transformationResult(warnings, errors);
     }
 
     public static TransformationResult transformationResult(
-        Status status,
         List<String> warnings,
         List<String> errors
     ) {
         return new TransformationResult(
-            status,
             warnings,
             errors,
             ImmutableMap.of(

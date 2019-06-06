@@ -5,7 +5,6 @@ import java.util.Map;
 
 public class TransformationResult {
 
-    public final Status status;
     public final List<String> warnings;
     public final List<String> errors;
     public final Map<String, Object> data;
@@ -13,13 +12,11 @@ public class TransformationResult {
 
     // region constructor
     public TransformationResult(
-        Status status,
         List<String> warnings,
         List<String> errors,
         Map<String, Object> data,
         String caseTypeId
     ) {
-        this.status = status;
         this.warnings = warnings;
         this.errors = errors;
         this.data = data;

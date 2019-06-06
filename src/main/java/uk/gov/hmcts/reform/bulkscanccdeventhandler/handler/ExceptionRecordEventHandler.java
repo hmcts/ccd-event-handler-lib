@@ -6,10 +6,7 @@ import uk.gov.hmcts.reform.bulkscanccdeventhandler.handler.model.ExceptionRecord
 import uk.gov.hmcts.reform.bulkscanccdeventhandler.transformer.ExceptionRecordToCaseTransformer;
 import uk.gov.hmcts.reform.bulkscanccdeventhandler.transformer.model.TransformationResult;
 
-import java.util.List;
 import java.util.function.Supplier;
-
-import static java.util.Collections.emptyList;
 
 public class ExceptionRecordEventHandler {
 
@@ -31,25 +28,21 @@ public class ExceptionRecordEventHandler {
 
     public ExceptionRecordResponse handle(ExceptionRecordRequest req, String idamToken) {
         TransformationResult result = transformer.transform(req.exceptionRecord);
-        switch (result.status) {
-            case OK:
-                ccdClient.createCase(result.data, idamToken, s2sTokenSupplier.get());
-                return resp(emptyList(), emptyList());
-            case WARNINGS:
-                if (req.ignoreWarnings) {
-                    ccdClient.createCase(result.data, idamToken, s2sTokenSupplier.get());
-                    return resp(emptyList(), emptyList());
-                } else {
-                    return resp(emptyList(), result.warnings);
-                }
-            case ERRORS:
-                return resp(result.errors, result.warnings);
-            default:
-                throw new IllegalArgumentException("Unhandled status " + result.status);
+
+        if (shouldCreateCase(result, req.ignoreWarnings)) {
+            ccdClient.createCase(result.data, idamToken, s2sTokenSupplier.get());
+        }
+        return new ExceptionRecordResponse(result.errors, result.warnings);
+    }
+
+    private boolean shouldCreateCase(TransformationResult result, boolean ignoreWarnings) {
+        if (!result.errors.isEmpty()) {
+            return false;
+        } else if (!result.warnings.isEmpty()) {
+            return ignoreWarnings ? true : false;
+        } else {
+            return true;
         }
     }
 
-    private ExceptionRecordResponse resp(List<String> errors, List<String> warnings) {
-        return new ExceptionRecordResponse(errors, warnings);
-    }
 }
