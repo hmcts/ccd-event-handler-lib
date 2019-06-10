@@ -80,7 +80,7 @@ public class ExceptionRecordEventHandlerTest {
     }
 
     @Test
-    public void should_transformation_result_with_warnings_when_errors_should_not_be_ignored() {
+    public void should_handle_transformation_result_with_warnings_when_errors_should_not_be_ignored() {
         // given
         ExceptionRecordRequest req = exceptionRecordRequest();
 
@@ -101,7 +101,7 @@ public class ExceptionRecordEventHandlerTest {
     }
 
     @Test
-    public void should_transformation_result_with_warnings_when_errors_should_be_ignored() {
+    public void should_handle_transformation_result_with_warnings_when_errors_should_be_ignored() {
         // given
         ExceptionRecordRequest req = exceptionRecordRequest(true); // ignore warnings
         String idamToken = "some-idam-token";
