@@ -14,7 +14,9 @@ public final class SampleExceptionRecordRequest {
         return new ExceptionRecordRequest(
             new ExceptionRecord(
                 "id",
+                "jurisdiction",
                 "state",
+                "case_type",
                 ImmutableMap.of(
                     "er_key_1", "er_value_1",
                     "er_key_2", "er_value_2"
