@@ -28,21 +28,14 @@ public class ExceptionRecordEventHandler {
     public CaseCreationResult handle(ExceptionRecordRequest req, String idamToken) {
         TransformationResult result = transformer.transform(req.exceptionRecord);
 
-        if (shouldCreateCase(result, req.ignoreWarnings)) {
+        boolean shouldCreateCase = result.errors.isEmpty() && (result.warnings.isEmpty() || req.ignoreWarnings);
+
+        if (shouldCreateCase) {
+            // TODO: handle exceptions
             String caseId = ccdClient.createCase(result.data, idamToken);
             return ok(caseId);
         } else {
             return errors(result.errors, result.warnings);
-        }
-    }
-
-    private boolean shouldCreateCase(TransformationResult result, boolean ignoreWarnings) {
-        if (!result.errors.isEmpty()) {
-            return false;
-        } else if (!result.warnings.isEmpty()) {
-            return ignoreWarnings ? true : false;
-        } else {
-            return true;
         }
     }
 
