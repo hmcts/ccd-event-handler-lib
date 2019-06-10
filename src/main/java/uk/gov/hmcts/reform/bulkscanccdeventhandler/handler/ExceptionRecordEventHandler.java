@@ -2,7 +2,7 @@ package uk.gov.hmcts.reform.bulkscanccdeventhandler.handler;
 
 import uk.gov.hmcts.reform.bulkscanccdeventhandler.ccd.CcdClient;
 import uk.gov.hmcts.reform.bulkscanccdeventhandler.handler.model.ExceptionRecordRequest;
-import uk.gov.hmcts.reform.bulkscanccdeventhandler.handler.model.ExceptionRecordResponse;
+import uk.gov.hmcts.reform.bulkscanccdeventhandler.handler.model.CaseCreationResult;
 import uk.gov.hmcts.reform.bulkscanccdeventhandler.transformer.ExceptionRecordToCaseTransformer;
 import uk.gov.hmcts.reform.bulkscanccdeventhandler.transformer.model.TransformationResult;
 
@@ -25,7 +25,7 @@ public class ExceptionRecordEventHandler {
     }
     // endregion
 
-    public ExceptionRecordResponse handle(ExceptionRecordRequest req, String idamToken) {
+    public CaseCreationResult handle(ExceptionRecordRequest req, String idamToken) {
         TransformationResult result = transformer.transform(req.exceptionRecord);
 
         if (shouldCreateCase(result, req.ignoreWarnings)) {
@@ -46,11 +46,11 @@ public class ExceptionRecordEventHandler {
         }
     }
 
-    private ExceptionRecordResponse ok(String caseId) {
-        return new ExceptionRecordResponse(caseId, emptyList(), emptyList());
+    private CaseCreationResult ok(String caseId) {
+        return new CaseCreationResult(caseId, emptyList(), emptyList());
     }
 
-    private ExceptionRecordResponse errors(List<String> errors, List<String> warnings) {
-        return new ExceptionRecordResponse(null, errors, warnings);
+    private CaseCreationResult errors(List<String> errors, List<String> warnings) {
+        return new CaseCreationResult(null, errors, warnings);
     }
 }

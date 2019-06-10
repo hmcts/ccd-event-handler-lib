@@ -7,7 +7,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.hmcts.reform.bulkscanccdeventhandler.ccd.CcdClient;
 import uk.gov.hmcts.reform.bulkscanccdeventhandler.handler.model.ExceptionRecordRequest;
-import uk.gov.hmcts.reform.bulkscanccdeventhandler.handler.model.ExceptionRecordResponse;
+import uk.gov.hmcts.reform.bulkscanccdeventhandler.handler.model.CaseCreationResult;
 import uk.gov.hmcts.reform.bulkscanccdeventhandler.transformer.ExceptionRecordToCaseTransformer;
 import uk.gov.hmcts.reform.bulkscanccdeventhandler.transformer.model.TransformationResult;
 
@@ -48,12 +48,12 @@ public class ExceptionRecordEventHandlerTest {
         given(transformer.transform(req.exceptionRecord)).willReturn(transformationResult);
 
         // when
-        ExceptionRecordResponse resp = handler.handle(req, idamToken);
+        CaseCreationResult result = handler.handle(req, idamToken);
 
         // then
-        assertThat(resp.caseId).isEqualTo("new-case-id");
-        assertThat(resp.errors).isEmpty();
-        assertThat(resp.warnings).isEmpty();
+        assertThat(result.caseId).isEqualTo("new-case-id");
+        assertThat(result.errors).isEmpty();
+        assertThat(result.warnings).isEmpty();
 
         verify(ccdClient).createCase(transformationResult.data, idamToken);
     }
@@ -69,12 +69,12 @@ public class ExceptionRecordEventHandlerTest {
             );
 
         // when
-        ExceptionRecordResponse resp = handler.handle(req, "idam-token");
+        CaseCreationResult result = handler.handle(req, "idam-token");
 
         // then
-        assertThat(resp.caseId).isNull();
-        assertThat(resp.errors).containsExactly("err1", "err2");
-        assertThat(resp.warnings).containsExactly("warn1", "warn2");
+        assertThat(result.caseId).isNull();
+        assertThat(result.errors).containsExactly("err1", "err2");
+        assertThat(result.warnings).containsExactly("warn1", "warn2");
 
         verify(ccdClient, never()).createCase(any(), any());
     }
@@ -90,12 +90,12 @@ public class ExceptionRecordEventHandlerTest {
             );
 
         // when
-        ExceptionRecordResponse resp = handler.handle(req, "idam-token");
+        CaseCreationResult result = handler.handle(req, "idam-token");
 
         // then
-        assertThat(resp.caseId).isNull();
-        assertThat(resp.errors).isEmpty();
-        assertThat(resp.warnings).containsExactly("warn1", "warn2");
+        assertThat(result.caseId).isNull();
+        assertThat(result.errors).isEmpty();
+        assertThat(result.warnings).containsExactly("warn1", "warn2");
 
         verify(ccdClient, never()).createCase(any(), any());
     }
@@ -112,12 +112,12 @@ public class ExceptionRecordEventHandlerTest {
         given(transformer.transform(req.exceptionRecord)).willReturn(transformationResult);
 
         // when
-        ExceptionRecordResponse resp = handler.handle(req, idamToken);
+        CaseCreationResult result = handler.handle(req, idamToken);
 
         // then
-        assertThat(resp.caseId).isEqualTo("new-case-id");
-        assertThat(resp.errors).isEmpty();
-        assertThat(resp.warnings).isEmpty(); // warnings removed!
+        assertThat(result.caseId).isEqualTo("new-case-id");
+        assertThat(result.errors).isEmpty();
+        assertThat(result.warnings).isEmpty(); // warnings removed!
 
         verify(ccdClient).createCase(transformationResult.data, idamToken);
     }
