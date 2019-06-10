@@ -7,23 +7,19 @@ import uk.gov.hmcts.reform.bulkscanccdeventhandler.transformer.ExceptionRecordTo
 import uk.gov.hmcts.reform.bulkscanccdeventhandler.transformer.model.TransformationResult;
 
 import java.util.List;
-import java.util.function.Supplier;
 
 import static java.util.Collections.emptyList;
 
 public class ExceptionRecordEventHandler {
 
-    private final Supplier<String> s2sTokenSupplier;
     private final ExceptionRecordToCaseTransformer transformer;
     private final CcdClient ccdClient;
 
     // region constructor
     public ExceptionRecordEventHandler(
-        Supplier<String> s2sTokenSupplier,
         ExceptionRecordToCaseTransformer transformer,
         CcdClient ccdClient
     ) {
-        this.s2sTokenSupplier = s2sTokenSupplier;
         this.transformer = transformer;
         this.ccdClient = ccdClient;
     }
@@ -33,7 +29,7 @@ public class ExceptionRecordEventHandler {
         TransformationResult result = transformer.transform(req.exceptionRecord);
 
         if (shouldCreateCase(result, req.ignoreWarnings)) {
-            String caseId = ccdClient.createCase(result.data, idamToken, s2sTokenSupplier.get());
+            String caseId = ccdClient.createCase(result.data, idamToken);
             return ok(caseId);
         } else {
             return errors(result.errors, result.warnings);
