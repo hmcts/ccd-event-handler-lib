@@ -2,16 +2,16 @@ package uk.gov.hmcts.reform.bulkscanccdeventhandler.handler.testutils.sampledata
 
 import com.google.common.collect.ImmutableMap;
 import uk.gov.hmcts.reform.bulkscanccdeventhandler.handler.model.ExceptionRecord;
-import uk.gov.hmcts.reform.bulkscanccdeventhandler.handler.model.ExceptionRecordRequest;
+import uk.gov.hmcts.reform.bulkscanccdeventhandler.handler.model.CaseCreationRequest;
 
 public final class SampleExceptionRecordRequest {
 
-    public static ExceptionRecordRequest exceptionRecordRequest() {
-        return exceptionRecordRequest(false);
+    public static CaseCreationRequest caseCreationRequest() {
+        return caseCreationRequest(false);
     }
 
-    public static ExceptionRecordRequest exceptionRecordRequest(boolean ignoreWarnings) {
-        return new ExceptionRecordRequest(
+    public static CaseCreationRequest caseCreationRequest(boolean ignoreWarnings) {
+        return new CaseCreationRequest(
             new ExceptionRecord(
                 "id",
                 "jurisdiction",
