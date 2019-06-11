@@ -1,8 +1,8 @@
 package uk.gov.hmcts.reform.bulkscanccdeventhandler.handler;
 
 import uk.gov.hmcts.reform.bulkscanccdeventhandler.ccd.CcdClient;
+import uk.gov.hmcts.reform.bulkscanccdeventhandler.handler.model.CaseCreationRequest;
 import uk.gov.hmcts.reform.bulkscanccdeventhandler.handler.model.CaseCreationResult;
-import uk.gov.hmcts.reform.bulkscanccdeventhandler.handler.model.ExceptionRecordRequest;
 import uk.gov.hmcts.reform.bulkscanccdeventhandler.transformer.ExceptionRecordToCaseTransformer;
 import uk.gov.hmcts.reform.bulkscanccdeventhandler.transformer.model.TransformationResult;
 
@@ -25,7 +25,7 @@ public class ExceptionRecordEventHandler {
     }
     // endregion
 
-    public CaseCreationResult handle(ExceptionRecordRequest req, String idamToken) {
+    public CaseCreationResult handle(CaseCreationRequest req, String idamToken) {
         TransformationResult result = transformer.transform(req.exceptionRecord);
 
         boolean shouldCreateCase = result.errors.isEmpty() && (result.warnings.isEmpty() || req.ignoreWarnings);

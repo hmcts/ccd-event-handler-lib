@@ -1,13 +1,13 @@
 package uk.gov.hmcts.reform.bulkscanccdeventhandler.handler.model;
 
-public class ExceptionRecordRequest {
+public class CaseCreationRequest {
 
     public final ExceptionRecord exceptionRecord;
     public final String eventId;
     public final boolean ignoreWarnings;
 
     // region constructor
-    public ExceptionRecordRequest(
+    public CaseCreationRequest(
         ExceptionRecord exceptionRecord,
         String eventId,
         boolean ignoreWarnings
