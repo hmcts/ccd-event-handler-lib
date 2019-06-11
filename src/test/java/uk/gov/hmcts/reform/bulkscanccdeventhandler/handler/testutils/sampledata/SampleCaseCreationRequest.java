@@ -4,7 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import uk.gov.hmcts.reform.bulkscanccdeventhandler.handler.model.ExceptionRecord;
 import uk.gov.hmcts.reform.bulkscanccdeventhandler.handler.model.CaseCreationRequest;
 
-public final class SampleExceptionRecordRequest {
+public final class SampleCaseCreationRequest {
 
     public static CaseCreationRequest caseCreationRequest() {
         return caseCreationRequest(false);
@@ -27,7 +27,7 @@ public final class SampleExceptionRecordRequest {
         );
     }
 
-    private SampleExceptionRecordRequest() {
+    private SampleCaseCreationRequest() {
         // util class
     }
 }

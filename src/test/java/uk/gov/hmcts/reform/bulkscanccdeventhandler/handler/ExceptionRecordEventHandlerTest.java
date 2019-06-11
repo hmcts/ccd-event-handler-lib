@@ -8,7 +8,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.hmcts.reform.bulkscanccdeventhandler.ccd.CcdClient;
 import uk.gov.hmcts.reform.bulkscanccdeventhandler.handler.model.CaseCreationResult;
 import uk.gov.hmcts.reform.bulkscanccdeventhandler.handler.model.CaseCreationRequest;
-import uk.gov.hmcts.reform.bulkscanccdeventhandler.handler.testutils.sampledata.SampleExceptionRecordRequest;
+import uk.gov.hmcts.reform.bulkscanccdeventhandler.handler.testutils.sampledata.SampleCaseCreationRequest;
 import uk.gov.hmcts.reform.bulkscanccdeventhandler.transformer.ExceptionRecordToCaseTransformer;
 import uk.gov.hmcts.reform.bulkscanccdeventhandler.transformer.model.TransformationResult;
 
@@ -18,7 +18,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
-import static uk.gov.hmcts.reform.bulkscanccdeventhandler.handler.testutils.sampledata.SampleExceptionRecordRequest.caseCreationRequest;
+import static uk.gov.hmcts.reform.bulkscanccdeventhandler.handler.testutils.sampledata.SampleCaseCreationRequest.caseCreationRequest;
 import static uk.gov.hmcts.reform.bulkscanccdeventhandler.handler.testutils.sampledata.SampleTransformationResult.errorResult;
 import static uk.gov.hmcts.reform.bulkscanccdeventhandler.handler.testutils.sampledata.SampleTransformationResult.okResult;
 import static uk.gov.hmcts.reform.bulkscanccdeventhandler.handler.testutils.sampledata.SampleTransformationResult.warningResult;
@@ -40,7 +40,7 @@ public class ExceptionRecordEventHandlerTest {
     @Test
     public void should_handle_successful_transformation_result() {
         // given
-        CaseCreationRequest req = SampleExceptionRecordRequest.caseCreationRequest();
+        CaseCreationRequest req = SampleCaseCreationRequest.caseCreationRequest();
         String idamToken = "some-idam-token";
 
         TransformationResult transformationResult = okResult();
@@ -62,7 +62,7 @@ public class ExceptionRecordEventHandlerTest {
     @Test
     public void should_handle_transformation_result_with_errors() {
         // given
-        CaseCreationRequest req = SampleExceptionRecordRequest.caseCreationRequest();
+        CaseCreationRequest req = SampleCaseCreationRequest.caseCreationRequest();
 
         given(transformer.transform(req.exceptionRecord))
             .willReturn(
@@ -83,7 +83,7 @@ public class ExceptionRecordEventHandlerTest {
     @Test
     public void should_handle_transformation_result_with_warnings_when_errors_should_not_be_ignored() {
         // given
-        CaseCreationRequest req = SampleExceptionRecordRequest.caseCreationRequest();
+        CaseCreationRequest req = SampleCaseCreationRequest.caseCreationRequest();
 
         given(transformer.transform(req.exceptionRecord))
             .willReturn(
