@@ -1,8 +1,8 @@
 package uk.gov.hmcts.reform.bulkscanccdeventhandler.handler.testutils.sampledata;
 
 import com.google.common.collect.ImmutableMap;
-import uk.gov.hmcts.reform.bulkscanccdeventhandler.handler.model.ExceptionRecord;
 import uk.gov.hmcts.reform.bulkscanccdeventhandler.handler.model.CaseCreationRequest;
+import uk.gov.hmcts.reform.bulkscanccdeventhandler.handler.model.ExceptionRecord;
 
 public final class SampleCaseCreationRequest {
 
