@@ -32,7 +32,8 @@ public final class SampleTransformationResult {
                 "tr_key_1", "tr_value_1",
                 "tr_key_2", "tr_value_2"
             ),
-            "some_case_type_id"
+            "some_case_type_id",
+            "some_event_id"
         );
     }
 
