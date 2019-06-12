@@ -42,7 +42,7 @@ public class CcdApiTest {
     // endregion
 
     @Test
-    void startEvent_send_valid_request() {
+    void startEvent_should_send_valid_request() {
         // given
         String token = "hello!";
         stubFor(
