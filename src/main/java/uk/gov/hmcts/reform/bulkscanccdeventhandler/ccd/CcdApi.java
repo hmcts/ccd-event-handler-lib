@@ -4,6 +4,7 @@ import feign.Headers;
 import feign.Param;
 import feign.RequestLine;
 
+@SuppressWarnings("checkstyle:LineLength")
 public interface CcdApi {
 
     @Headers({
