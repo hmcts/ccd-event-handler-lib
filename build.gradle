@@ -20,9 +20,7 @@ repositories {
 
 dependencies {
     implementation group: 'com.google.guava', name: 'guava', version: '11.0.2'
-    implementation group: 'io.github.openfeign', name: 'feign-core', version: '10.2.3'
     implementation group: 'io.github.openfeign', name: 'feign-jackson', version: '10.2.3'
-
 
     testCompile group: 'org.assertj', name: 'assertj-core', version: '3.11.0'
     testCompile group: 'org.mockito', name: 'mockito-core', version: '2.28.2'
