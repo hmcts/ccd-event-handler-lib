@@ -22,4 +22,22 @@ public interface CcdApi {
         @Param("caseType") String caseType,
         @Param("eventId") String eventId
     );
+
+    @Headers({
+        "Content-Type: application/json",
+        "Authorization: {idamToken}",
+        "ServiceAuthorization: {s2sToken}"
+    })
+    @RequestLine(
+        "POST /caseworkers/{userId}/jurisdictions/{jurisdiction}/case-types/{caseType}/cases?ignore-warning={ignoreWarning}"
+    )
+    CaseDataResp submitEvent(
+        CaseDataReq caseDataReq,
+        @Param("userId") String userId,
+        @Param("idamToken") String idamToken,
+        @Param("s2sToken") String s2sToken,
+        @Param("jurisdiction") String jurisdiction,
+        @Param("caseType") String caseType,
+        @Param("ignoreWarning") boolean ignoreWarning
+    );
 }
