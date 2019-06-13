@@ -1,13 +1,12 @@
 package uk.gov.hmcts.reform.bulkscanccdeventhandler.transformer.model;
 
 import java.util.List;
-import java.util.Map;
 
 public class TransformationResult {
 
     public final List<String> warnings;
     public final List<String> errors;
-    public final Map<String, Object> data;
+    public final Object data;
     public final String caseTypeId;
     public final String eventId;
 
@@ -15,7 +14,7 @@ public class TransformationResult {
     public TransformationResult(
         List<String> warnings,
         List<String> errors,
-        Map<String, Object> data,
+        Object data,
         String caseTypeId,
         String eventId
     ) {

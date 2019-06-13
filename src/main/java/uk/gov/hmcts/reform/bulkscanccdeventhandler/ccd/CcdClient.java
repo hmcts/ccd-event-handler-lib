@@ -1,6 +1,5 @@
 package uk.gov.hmcts.reform.bulkscanccdeventhandler.ccd;
 
-import java.util.Map;
 import java.util.function.Supplier;
 
 public class CcdClient {
@@ -11,7 +10,7 @@ public class CcdClient {
         this.s2sTokenSupplier = s2sTokenSupplier;
     }
 
-    public String createCase(Map<String, Object> data, String idamToken) {
+    public String createCase(Object data, String idamToken) {
         throw new UnsupportedOperationException("Not implemented yet");
     }
 }
