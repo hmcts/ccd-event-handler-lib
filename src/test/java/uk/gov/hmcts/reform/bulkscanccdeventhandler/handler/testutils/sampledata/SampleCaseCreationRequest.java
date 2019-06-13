@@ -24,6 +24,7 @@ public final class SampleCaseCreationRequest {
             ),
             "event_id",
             "idam-token",
+            "idam-user-id",
             ignoreWarnings
         );
     }
