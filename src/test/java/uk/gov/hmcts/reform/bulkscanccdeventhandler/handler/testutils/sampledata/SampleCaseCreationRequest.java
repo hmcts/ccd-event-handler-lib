@@ -23,6 +23,7 @@ public final class SampleCaseCreationRequest {
                 )
             ),
             "event_id",
+            "idam-token",
             ignoreWarnings
         );
     }

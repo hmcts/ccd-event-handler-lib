@@ -25,14 +25,14 @@ public class ExceptionRecordEventHandler {
     }
     // endregion
 
-    public CaseCreationResult handle(CaseCreationRequest req, String idamToken) {
+    public CaseCreationResult handle(CaseCreationRequest req) {
         TransformationResult result = transformer.transform(req.exceptionRecord);
 
         boolean shouldCreateCase = result.errors.isEmpty() && (result.warnings.isEmpty() || req.ignoreWarnings);
 
         if (shouldCreateCase) {
             // TODO: handle exceptions
-            String caseId = ccdClient.createCase(result.data, idamToken);
+            String caseId = ccdClient.createCase(result.data, req.idamToken);
             return ok(caseId);
         } else {
             return errors(result.errors, result.warnings);

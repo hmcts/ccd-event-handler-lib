@@ -41,22 +41,20 @@ public class ExceptionRecordEventHandlerTest {
     public void should_handle_successful_transformation_result() {
         // given
         CaseCreationRequest req = SampleCaseCreationRequest.caseCreationRequest();
-        String idamToken = "some-idam-token";
-
         TransformationResult transformationResult = okResult();
 
         given(ccdClient.createCase(any(), any())).willReturn("new-case-id");
         given(transformer.transform(req.exceptionRecord)).willReturn(transformationResult);
 
         // when
-        CaseCreationResult result = handler.handle(req, idamToken);
+        CaseCreationResult result = handler.handle(req);
 
         // then
         assertThat(result.caseId).isEqualTo("new-case-id");
         assertThat(result.errors).isEmpty();
         assertThat(result.warnings).isEmpty();
 
-        verify(ccdClient).createCase(transformationResult.data, idamToken);
+        verify(ccdClient).createCase(transformationResult.data, req.idamToken);
     }
 
     @Test
@@ -70,7 +68,7 @@ public class ExceptionRecordEventHandlerTest {
             );
 
         // when
-        CaseCreationResult result = handler.handle(req, "idam-token");
+        CaseCreationResult result = handler.handle(req);
 
         // then
         assertThat(result.caseId).isNull();
@@ -91,7 +89,7 @@ public class ExceptionRecordEventHandlerTest {
             );
 
         // when
-        CaseCreationResult result = handler.handle(req, "idam-token");
+        CaseCreationResult result = handler.handle(req);
 
         // then
         assertThat(result.caseId).isNull();
@@ -105,7 +103,6 @@ public class ExceptionRecordEventHandlerTest {
     public void should_handle_transformation_result_with_warnings_when_errors_should_be_ignored() {
         // given
         CaseCreationRequest req = caseCreationRequest(true); // ignore warnings
-        String idamToken = "some-idam-token";
 
         TransformationResult transformationResult = warningResult(asList("warn1", "warn2"));
 
@@ -113,13 +110,13 @@ public class ExceptionRecordEventHandlerTest {
         given(transformer.transform(req.exceptionRecord)).willReturn(transformationResult);
 
         // when
-        CaseCreationResult result = handler.handle(req, idamToken);
+        CaseCreationResult result = handler.handle(req);
 
         // then
         assertThat(result.caseId).isEqualTo("new-case-id");
         assertThat(result.errors).isEmpty();
         assertThat(result.warnings).isEmpty(); // warnings removed!
 
-        verify(ccdClient).createCase(transformationResult.data, idamToken);
+        verify(ccdClient).createCase(transformationResult.data, req.idamToken);
     }
 }
