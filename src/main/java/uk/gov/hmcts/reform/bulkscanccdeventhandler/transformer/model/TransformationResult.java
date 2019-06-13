@@ -4,10 +4,30 @@ import java.util.List;
 
 public class TransformationResult {
 
+    /**
+     * Warnings that occurred during case mapping or validation.
+     */
     public final List<String> warnings;
+
+    /**
+     * Errors that occurred during case mapping or validation.
+     */
     public final List<String> errors;
+
+    /**
+     * Object representing the case that should be created in CCD.
+     * It will be serialized to json. I can be a map or a domain object, as long as it serialises to expected json.
+     */
     public final Object data;
+
+    /**
+     * CCD CaseTypeId that should be used when creating a case.
+     */
     public final String caseTypeId;
+
+    /**
+     * CCD Event Id that should be used when creating a case.
+     */
     public final String eventId;
 
     // region constructor
