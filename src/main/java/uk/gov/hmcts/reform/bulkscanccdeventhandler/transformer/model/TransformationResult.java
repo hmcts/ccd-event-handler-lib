@@ -16,7 +16,7 @@ public class TransformationResult {
 
     /**
      * Object representing the case that should be created in CCD.
-     * It will be serialized to json. I can be a map or a domain object, as long as it serialises to expected json.
+     * It will be serialised to json. It can be a map or a domain object, as long as it serialises to expected json.
      */
     public final Object data;
 
