@@ -31,6 +31,7 @@ public class ExceptionRecordEventHandlerFactoryTest {
     void should_require_all_arguments_to_be_present() {
         assertThatThrownBy(() -> getHandler(null, ccdUrl, s2sTokenSupplier)).isInstanceOf(NullPointerException.class);
         assertThatThrownBy(() -> getHandler(transformer, null, s2sTokenSupplier)).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> getHandler(transformer, "", s2sTokenSupplier)).isInstanceOf(IllegalArgumentException.class);
         assertThatThrownBy(() -> getHandler(transformer, ccdUrl, null)).isInstanceOf(NullPointerException.class);
     }
 }
