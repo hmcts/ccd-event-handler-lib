@@ -3,6 +3,7 @@ package uk.gov.hmcts.reform.bulkscanccdeventhandler.handler;
 import uk.gov.hmcts.reform.bulkscanccdeventhandler.ccd.CcdClient;
 import uk.gov.hmcts.reform.bulkscanccdeventhandler.handler.model.CaseCreationRequest;
 import uk.gov.hmcts.reform.bulkscanccdeventhandler.handler.model.CaseCreationResult;
+import uk.gov.hmcts.reform.bulkscanccdeventhandler.handler.validation.CaseCreationRequestValidator;
 import uk.gov.hmcts.reform.bulkscanccdeventhandler.transformer.ExceptionRecordToCaseTransformer;
 import uk.gov.hmcts.reform.bulkscanccdeventhandler.transformer.model.TransformationResult;
 
@@ -14,18 +15,22 @@ public class ExceptionRecordEventHandler {
 
     private final ExceptionRecordToCaseTransformer transformer;
     private final CcdClient ccdClient;
+    private final CaseCreationRequestValidator validator;
 
     // region constructor
     public ExceptionRecordEventHandler(
         ExceptionRecordToCaseTransformer transformer,
-        CcdClient ccdClient
+        CcdClient ccdClient,
+        CaseCreationRequestValidator validator
     ) {
         this.transformer = transformer;
         this.ccdClient = ccdClient;
+        this.validator = validator;
     }
     // endregion
 
     public CaseCreationResult handle(CaseCreationRequest req) {
+        validator.validate(req);
         TransformationResult result = transformer.transform(req.exceptionRecord);
 
         boolean shouldCreateCase = result.errors.isEmpty() && (result.warnings.isEmpty() || req.ignoreWarnings);

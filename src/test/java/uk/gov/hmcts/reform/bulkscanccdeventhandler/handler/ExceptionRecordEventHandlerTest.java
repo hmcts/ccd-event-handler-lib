@@ -9,6 +9,7 @@ import uk.gov.hmcts.reform.bulkscanccdeventhandler.ccd.CcdClient;
 import uk.gov.hmcts.reform.bulkscanccdeventhandler.handler.model.CaseCreationRequest;
 import uk.gov.hmcts.reform.bulkscanccdeventhandler.handler.model.CaseCreationResult;
 import uk.gov.hmcts.reform.bulkscanccdeventhandler.handler.testutils.sampledata.SampleCaseCreationRequest;
+import uk.gov.hmcts.reform.bulkscanccdeventhandler.handler.validation.CaseCreationRequestValidator;
 import uk.gov.hmcts.reform.bulkscanccdeventhandler.transformer.ExceptionRecordToCaseTransformer;
 import uk.gov.hmcts.reform.bulkscanccdeventhandler.transformer.model.TransformationResult;
 
@@ -29,12 +30,13 @@ public class ExceptionRecordEventHandlerTest {
 
     @Mock private ExceptionRecordToCaseTransformer transformer;
     @Mock private CcdClient ccdClient;
+    @Mock private CaseCreationRequestValidator validator;
 
     private ExceptionRecordEventHandler handler;
 
     @BeforeEach
     private void setUp() {
-        this.handler = new ExceptionRecordEventHandler(transformer, ccdClient);
+        this.handler = new ExceptionRecordEventHandler(transformer, ccdClient, validator);
     }
 
     @Test
@@ -118,5 +120,18 @@ public class ExceptionRecordEventHandlerTest {
         assertThat(result.warnings).isEmpty(); // warnings removed!
 
         verify(ccdClient).createCase(transformationResult.data, req.idamToken);
+    }
+
+    @Test
+    public void should_validate_request() {
+        // given
+        CaseCreationRequest req = SampleCaseCreationRequest.caseCreationRequest();
+        given(transformer.transform(req.exceptionRecord)).willReturn(okResult());
+
+        // when
+        handler.handle(req);
+
+        // then
+        verify(validator).validate(req);
     }
 }
