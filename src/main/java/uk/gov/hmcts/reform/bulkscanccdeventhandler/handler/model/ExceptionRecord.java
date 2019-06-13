@@ -1,23 +1,23 @@
 package uk.gov.hmcts.reform.bulkscanccdeventhandler.handler.model;
 
 import java.util.Map;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotEmpty;
 
 public class ExceptionRecord {
 
-    @NotNull
+    @NotEmpty
     public final String id;
 
-    @NotNull
+    @NotEmpty
     public final String jurisdiction;
 
-    @NotNull
+    @NotEmpty
     public final String state;
 
-    @NotNull
+    @NotEmpty
     public final String caseTypeId;
 
-    @NotNull
+    @NotEmpty
     public final Map<String, Object> data;
 
     // region constructor

@@ -1,6 +1,7 @@
 package uk.gov.hmcts.reform.bulkscanccdeventhandler.handler.model;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 public class CaseCreationRequest {
@@ -9,13 +10,13 @@ public class CaseCreationRequest {
     @NotNull
     public final ExceptionRecord exceptionRecord;
 
-    @NotNull
+    @NotEmpty
     public final String eventId;
 
-    @NotNull
+    @NotEmpty
     public final String idamToken;
 
-    @NotNull
+    @NotEmpty
     public final String idamUserId;
 
     public final boolean ignoreWarnings;

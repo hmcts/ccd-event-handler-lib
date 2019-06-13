@@ -26,7 +26,7 @@ class CaseCreationRequestValidatorTest {
     @Test
     void should_throw_an_exception_if_there_are_missing_fields() {
         // given
-        CaseCreationRequest req = new CaseCreationRequest(null, null, null, null, false);
+        CaseCreationRequest req = new CaseCreationRequest(null, null, "", null, false);
 
         // when
         Throwable exc = catchThrowable(() -> new CaseCreationRequestValidator().validate(req));
@@ -35,9 +35,9 @@ class CaseCreationRequestValidatorTest {
         assertThat(exc)
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessageContaining("exceptionRecord must not be null")
-            .hasMessageContaining("eventId must not be null")
-            .hasMessageContaining("idamToken must not be null")
-            .hasMessageContaining("idamUserId must not be null");
+            .hasMessageContaining("eventId must not be empty")
+            .hasMessageContaining("idamToken must not be empty")
+            .hasMessageContaining("idamUserId must not be empty");
     }
 
     @Test
@@ -57,10 +57,10 @@ class CaseCreationRequestValidatorTest {
         // then
         assertThat(exc)
             .isInstanceOf(IllegalArgumentException.class)
-            .hasMessageContaining("exceptionRecord.id must not be null")
-            .hasMessageContaining("exceptionRecord.data must not be null")
-            .hasMessageContaining("exceptionRecord.jurisdiction must not be null")
-            .hasMessageContaining("exceptionRecord.caseTypeId must not be null")
-            .hasMessageContaining("exceptionRecord.state must not be null");
+            .hasMessageContaining("exceptionRecord.id must not be empty")
+            .hasMessageContaining("exceptionRecord.data must not be empty")
+            .hasMessageContaining("exceptionRecord.jurisdiction must not be empty")
+            .hasMessageContaining("exceptionRecord.caseTypeId must not be empty")
+            .hasMessageContaining("exceptionRecord.state must not be empty");
     }
 }
