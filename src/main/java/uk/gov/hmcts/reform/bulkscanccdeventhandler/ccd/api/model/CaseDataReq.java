@@ -1,4 +1,4 @@
-package uk.gov.hmcts.reform.bulkscanccdeventhandler.ccd;
+package uk.gov.hmcts.reform.bulkscanccdeventhandler.ccd.api.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
