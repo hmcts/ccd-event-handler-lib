@@ -1,8 +1,11 @@
-package uk.gov.hmcts.reform.bulkscanccdeventhandler.ccd;
+package uk.gov.hmcts.reform.bulkscanccdeventhandler.ccd.api;
 
 import feign.Headers;
 import feign.Param;
 import feign.RequestLine;
+import uk.gov.hmcts.reform.bulkscanccdeventhandler.ccd.api.model.CaseDataReq;
+import uk.gov.hmcts.reform.bulkscanccdeventhandler.ccd.api.model.CaseDataResp;
+import uk.gov.hmcts.reform.bulkscanccdeventhandler.ccd.api.model.StartEventResponse;
 
 @SuppressWarnings("checkstyle:LineLength")
 public interface CcdApi {

@@ -9,12 +9,15 @@ import feign.jackson.JacksonEncoder;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import uk.gov.hmcts.reform.bulkscanccdeventhandler.ccd.api.CcdApi;
+import uk.gov.hmcts.reform.bulkscanccdeventhandler.ccd.api.model.CaseDataReq;
+import uk.gov.hmcts.reform.bulkscanccdeventhandler.ccd.api.model.CaseDataResp;
+import uk.gov.hmcts.reform.bulkscanccdeventhandler.ccd.api.model.Event;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.anyUrl;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalToJson;
-import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.serverError;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
@@ -23,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
 import static uk.gov.hmcts.reform.bulkscanccdeventhandler.testutils.JsonHelper.json;
 
-public class CcdApiTest {
+public class CcdApiSubmitEventTest {
 
     private WireMockServer wireMockServer;
     private CcdApi ccdApi;
@@ -47,35 +50,7 @@ public class CcdApiTest {
     // endregion
 
     @Test
-    void startEvent_should_send_valid_request() {
-        // given
-        String token = "hello!";
-        stubFor(
-            get(urlEqualTo("/caseworkers/user1/jurisdictions/jur1/case-types/caseType1/event-triggers/eventId1/token"))
-                .withHeader("Authorization", equalTo("idam-token1"))
-                .withHeader("ServiceAuthorization", equalTo("s2s-token1"))
-                .willReturn(
-                    aResponse()
-                        .withStatus(200)
-                        .withBody(json("{ 'token' : '" + token + "' }"))
-                ));
-
-        // when
-        StartEventResponse resp = ccdApi.startEvent(
-            "user1",
-            "idam-token1",
-            "s2s-token1",
-            "jur1",
-            "caseType1",
-            "eventId1"
-        );
-
-        // then
-        assertThat(resp.token).isEqualTo(token);
-    }
-
-    @Test
-    void submitEvent_should_send_valid_request() {
+    void should_send_valid_request() {
         // given
         String id = "12345";
         stubFor(
@@ -119,21 +94,7 @@ public class CcdApiTest {
     }
 
     @Test
-    void startEvent_should_throw_an_exception_when_request_failed() {
-        // given
-        stubFor(get(anyUrl()).willReturn(serverError()));
-
-        // when
-        Throwable exc = catchThrowable(
-            () -> ccdApi.startEvent("user1", "idam-token1", "s2s-token1", "jur1", "caseType1", "eventId1")
-        );
-
-        // then
-        assertThat(exc).isInstanceOf(FeignException.InternalServerError.class);
-    }
-
-    @Test
-    void submitEvent_should_throw_an_exception_when_request_failed() {
+    void should_throw_an_exception_when_request_failed() {
         // given
         stubFor(post(anyUrl()).willReturn(serverError()));
 
