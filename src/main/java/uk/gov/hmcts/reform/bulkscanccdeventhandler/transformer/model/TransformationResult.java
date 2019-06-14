@@ -21,6 +21,11 @@ public class TransformationResult {
     public final Object data;
 
     /**
+     * CCD jurisdiction in which case should be created.
+     */
+    public final String jurisdiction;
+
+    /**
      * CCD CaseTypeId that should be used when creating a case.
      */
     public final String caseTypeId;
@@ -35,12 +40,14 @@ public class TransformationResult {
         List<String> warnings,
         List<String> errors,
         Object data,
+        String jurisdiction,
         String caseTypeId,
         String eventId
     ) {
         this.warnings = warnings;
         this.errors = errors;
         this.data = data;
+        this.jurisdiction = jurisdiction;
         this.caseTypeId = caseTypeId;
         this.eventId = eventId;
     }
