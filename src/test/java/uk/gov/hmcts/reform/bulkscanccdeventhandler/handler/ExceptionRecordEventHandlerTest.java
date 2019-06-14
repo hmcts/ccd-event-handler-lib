@@ -56,7 +56,7 @@ public class ExceptionRecordEventHandlerTest {
         assertThat(result.errors).isEmpty();
         assertThat(result.warnings).isEmpty();
 
-        verify(ccdClient).createCase(transformationResult.data, req.idamToken);
+        verify(ccdClient).createCase(req, transformationResult);
     }
 
     @Test
@@ -119,7 +119,7 @@ public class ExceptionRecordEventHandlerTest {
         assertThat(result.errors).isEmpty();
         assertThat(result.warnings).isEmpty(); // warnings removed!
 
-        verify(ccdClient).createCase(transformationResult.data, req.idamToken);
+        verify(ccdClient).createCase(req, transformationResult);
     }
 
     @Test
