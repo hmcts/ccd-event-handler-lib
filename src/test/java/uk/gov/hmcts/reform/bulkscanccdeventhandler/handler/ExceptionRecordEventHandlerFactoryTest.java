@@ -1,7 +1,7 @@
 package uk.gov.hmcts.reform.bulkscanccdeventhandler.handler;
 
 import org.junit.jupiter.api.Test;
-import uk.gov.hmcts.reform.bulkscanccdeventhandler.handler.testutils.sampledata.SampleTransformationResult;
+import uk.gov.hmcts.reform.bulkscanccdeventhandler.testutils.sampledata.SampleTransformationResult;
 import uk.gov.hmcts.reform.bulkscanccdeventhandler.transformer.ExceptionRecordToCaseTransformer;
 
 import java.util.UUID;
