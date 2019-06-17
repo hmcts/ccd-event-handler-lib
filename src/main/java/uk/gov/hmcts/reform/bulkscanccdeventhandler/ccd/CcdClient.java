@@ -22,30 +22,30 @@ public class CcdClient {
     }
     // endregion
 
-    public String createCase(CaseCreationRequest req, TransformationResult ts) {
+    public String createCase(CaseCreationRequest req, TransformationResult tr) {
         // TODO: handle exceptions
         StartEventResponse startEventResponse =
             api.startEvent(
                 req.idamUserId,
                 req.idamToken,
                 s2sTokenSupplier.get(),
-                ts.jurisdiction,
-                ts.caseTypeId,
-                ts.eventId
+                tr.jurisdiction,
+                tr.caseTypeId,
+                tr.eventId
             );
 
         CaseDataResp newCase =
             api.submitEvent(
                 new CaseDataReq(
-                    new Event(ts.eventId),
-                    ts.data,
+                    new Event(tr.eventId),
+                    tr.data,
                     startEventResponse.token
                 ),
                 req.idamUserId,
                 req.idamToken,
                 s2sTokenSupplier.get(),
-                ts.jurisdiction,
-                ts.caseTypeId,
+                tr.jurisdiction,
+                tr.caseTypeId,
                 req.ignoreWarnings
             );
 
