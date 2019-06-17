@@ -1,5 +1,7 @@
 package uk.gov.hmcts.reform.bulkscanccdeventhandler.ccd;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import uk.gov.hmcts.reform.bulkscanccdeventhandler.ccd.api.CcdApi;
 import uk.gov.hmcts.reform.bulkscanccdeventhandler.ccd.api.model.CaseDataReq;
 import uk.gov.hmcts.reform.bulkscanccdeventhandler.ccd.api.model.CaseDataResp;
@@ -11,6 +13,8 @@ import uk.gov.hmcts.reform.bulkscanccdeventhandler.transformer.model.Transformat
 import java.util.function.Supplier;
 
 public class CcdClient {
+
+    private static final Logger log = LoggerFactory.getLogger(CcdClient.class);
 
     private final CcdApi api;
     private final Supplier<String> s2sTokenSupplier;
@@ -24,6 +28,7 @@ public class CcdClient {
 
     public String createCase(CaseCreationRequest req, TransformationResult tr) {
         // TODO: handle exceptions
+        log.info("Starting CCD event. CaseType: {}, EventId: {}", tr.caseTypeId, tr.eventId);
         StartEventResponse startEventResponse =
             api.startEvent(
                 req.idamUserId,
@@ -34,6 +39,7 @@ public class CcdClient {
                 tr.eventId
             );
 
+        log.info("Submitting CCD event. CaseType: {}, EventId: {}", tr.caseTypeId, tr.eventId);
         CaseDataResp newCase =
             api.submitEvent(
                 new CaseDataReq(
