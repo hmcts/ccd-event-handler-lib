@@ -17,6 +17,7 @@ import java.util.function.Supplier;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
@@ -77,7 +78,7 @@ public class CcdClientTest {
         assertThat(id).isEqualTo(newCaseId);
 
         ArgumentCaptor<CaseDataReq> argCaptor = ArgumentCaptor.forClass(CaseDataReq.class);
-        verify(api).submitEvent(argCaptor.capture(), any(), any(), any(), any(), any(), any());
+        verify(api).submitEvent(argCaptor.capture(), any(), any(), any(), any(), any(), anyBoolean());
         CaseDataReq createdCaseData = argCaptor.getValue();
 
         assertThat(createdCaseData.eventToken).isEqualTo(eventToken);

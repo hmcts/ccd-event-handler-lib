@@ -37,7 +37,7 @@ public class CcdClient {
         CaseDataResp newCase =
             api.submitEvent(
                 new CaseDataReq(
-                    new Event(req.eventId),
+                    new Event(ts.eventId),
                     ts.data,
                     startEventResponse.token
                 ),
