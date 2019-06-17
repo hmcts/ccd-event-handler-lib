@@ -14,21 +14,21 @@ This library will be used to handle CCD events related to creating a case from a
 interface.
 
 2. Create an instance of a handler:
-    ```java
-    ExceptionRecordEventHandler handler = 
-        ExceptionRecordEventHandlerFactory.getHandler(
-            transformer,
-            ccdUrl,
-            s2sTokenSupplier
-        );
-    ```
-    where `s2sTokenSupplier` is an function returning s2s token for your service.
+   ```java
+   ExceptionRecordEventHandler handler = 
+       ExceptionRecordEventHandlerFactory.getHandler(
+           transformer,
+           ccdUrl,
+           s2sTokenSupplier
+       );
+   ```
+   where `s2sTokenSupplier` is an function returning s2s token for your service.
 
 3. Call the handler by passing [`CaseCreationRequest`](https://github.com/hmcts/bulk-scan-ccd-event-handler-lib/blob/master/src/main/java/uk/gov/hmcts/reform/bulkscanccdeventhandler/handler/model/CaseCreationRequest.java)
 to it:
-```java
-CaseCreationResult result = handler.handle(careCreationRequest);
-``` 
+   ```java
+   CaseCreationResult result = handler.handle(careCreationRequest);
+   ``` 
 
 The handler will create a case in CCD for you and return the ID of the new case.
 
