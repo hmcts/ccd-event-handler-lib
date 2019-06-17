@@ -41,7 +41,7 @@ public class CcdClientTest {
     public void should_call_api_with_correct_params() {
         // given
         CaseCreationRequest req = caseCreationRequest();
-        TransformationResult ts = okResult();
+        TransformationResult tr = okResult();
         String s2s = "s2s-token";
         given(s2sTokenSupplier.get())
             .willReturn(s2s);
@@ -51,9 +51,9 @@ public class CcdClientTest {
             req.idamUserId,
             req.idamToken,
             s2s,
-            ts.jurisdiction,
-            ts.caseTypeId,
-            ts.eventId
+            tr.jurisdiction,
+            tr.caseTypeId,
+            tr.eventId
         )).willReturn(
             new StartEventResponse(eventToken)
         );
@@ -64,15 +64,15 @@ public class CcdClientTest {
             eq(req.idamUserId),
             eq(req.idamToken),
             eq(s2s),
-            eq(ts.jurisdiction),
-            eq(ts.caseTypeId),
+            eq(tr.jurisdiction),
+            eq(tr.caseTypeId),
             eq(req.ignoreWarnings)
         )).willReturn(
             new CaseDataResp(newCaseId)
         );
 
         // when
-        String id = ccdClient.createCase(req, ts);
+        String id = ccdClient.createCase(req, tr);
 
         // then
         assertThat(id).isEqualTo(newCaseId);
@@ -82,6 +82,6 @@ public class CcdClientTest {
         CaseDataReq createdCaseData = argCaptor.getValue();
 
         assertThat(createdCaseData.eventToken).isEqualTo(eventToken);
-        assertThat(createdCaseData.event.id).isEqualTo(ts.eventId);
+        assertThat(createdCaseData.event.id).isEqualTo(tr.eventId);
     }
 }
