@@ -9,22 +9,22 @@ This library will be used to handle CCD events related to creating a case from a
 
 ## Usage
 
-Create an instance of case transformer by implementing
+1. Create an instance of case transformer by implementing
 [`ExceptionRecordToCaseTransformer`](https://github.com/hmcts/bulk-scan-ccd-event-handler-lib/blob/master/src/main/java/uk/gov/hmcts/reform/bulkscanccdeventhandler/transformer/ExceptionRecordToCaseTransformer.java)
 interface.
 
-Create an instance of a handler:
-```java
-ExceptionRecordEventHandler handler = 
-    ExceptionRecordEventHandlerFactory.getHandler(
-        transformer,
-        ccdUrl,
-        s2sTokenSupplier
-    );
-```
-where `s2sTokenSupplier` is an function returning s2s token for your service.
+2. Create an instance of a handler:
+    ```java
+    ExceptionRecordEventHandler handler = 
+        ExceptionRecordEventHandlerFactory.getHandler(
+            transformer,
+            ccdUrl,
+            s2sTokenSupplier
+        );
+    ```
+    where `s2sTokenSupplier` is an function returning s2s token for your service.
 
-Call the handler by passing [`CaseCreationRequest`](https://github.com/hmcts/bulk-scan-ccd-event-handler-lib/blob/master/src/main/java/uk/gov/hmcts/reform/bulkscanccdeventhandler/handler/model/CaseCreationRequest.java)
+3. Call the handler by passing [`CaseCreationRequest`](https://github.com/hmcts/bulk-scan-ccd-event-handler-lib/blob/master/src/main/java/uk/gov/hmcts/reform/bulkscanccdeventhandler/handler/model/CaseCreationRequest.java)
 to it:
 ```java
 CaseCreationResult result = handler.handle(careCreationRequest);
