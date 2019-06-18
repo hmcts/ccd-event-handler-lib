@@ -23,8 +23,8 @@ import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
-import static uk.gov.hmcts.reform.bulkscanccdeventhandler.handler.testutils.sampledata.SampleCaseCreationRequest.caseCreationRequest;
-import static uk.gov.hmcts.reform.bulkscanccdeventhandler.handler.testutils.sampledata.SampleTransformationResult.okResult;
+import static uk.gov.hmcts.reform.bulkscanccdeventhandler.testutils.sampledata.SampleCaseCreationRequest.caseCreationRequest;
+import static uk.gov.hmcts.reform.bulkscanccdeventhandler.testutils.sampledata.SampleTransformationResult.okResult;
 
 @ExtendWith(MockitoExtension.class)
 public class CcdClientTest {
