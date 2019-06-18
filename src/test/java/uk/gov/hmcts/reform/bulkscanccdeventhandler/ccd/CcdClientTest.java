@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.bulkscanccdeventhandler.ccd;
 
+import feign.FeignException.InternalServerError;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,13 +17,14 @@ import uk.gov.hmcts.reform.bulkscanccdeventhandler.transformer.model.Transformat
 import java.util.function.Supplier;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
-import static uk.gov.hmcts.reform.bulkscanccdeventhandler.handler.testutils.sampledata.SampleCaseCreationRequest.caseCreationRequest;
-import static uk.gov.hmcts.reform.bulkscanccdeventhandler.handler.testutils.sampledata.SampleTransformationResult.okResult;
+import static uk.gov.hmcts.reform.bulkscanccdeventhandler.testutils.sampledata.SampleCaseCreationRequest.caseCreationRequest;
+import static uk.gov.hmcts.reform.bulkscanccdeventhandler.testutils.sampledata.SampleTransformationResult.okResult;
 
 @ExtendWith(MockitoExtension.class)
 public class CcdClientTest {
@@ -83,5 +85,40 @@ public class CcdClientTest {
 
         assertThat(createdCaseData.eventToken).isEqualTo(eventToken);
         assertThat(createdCaseData.event.id).isEqualTo(tr.eventId);
+    }
+
+    @Test
+    public void should_handle_exceptions_when_starting_a_ccd_event() {
+        // given
+        InternalServerError error = new InternalServerError("error", null);
+        given(api.startEvent(any(), any(), any(), any(), any(), any())).willThrow(error);
+
+        // when
+        Throwable exc = catchThrowable(() -> ccdClient.createCase(caseCreationRequest(), okResult()));
+
+        // then
+        assertThat(exc)
+            .isInstanceOf(CcdException.class)
+            .hasMessage("Error starting CCD event")
+            .hasCause(error);
+    }
+
+    @Test
+    public void should_handle_exceptions_when_submitting_a_ccd_event() {
+        // given
+        InternalServerError error = new InternalServerError("error", null);
+        given(api.startEvent(any(), any(), any(), any(), any(), any()))
+            .willReturn(new StartEventResponse("token"));
+        given(api.submitEvent(any(), any(), any(), any(), any(), any(), anyBoolean()))
+            .willThrow(error);
+
+        // when
+        Throwable exc = catchThrowable(() -> ccdClient.createCase(caseCreationRequest(), okResult()));
+
+        // then
+        assertThat(exc)
+            .isInstanceOf(CcdException.class)
+            .hasMessage("Error submitting CCD event")
+            .hasCause(error);
     }
 }
