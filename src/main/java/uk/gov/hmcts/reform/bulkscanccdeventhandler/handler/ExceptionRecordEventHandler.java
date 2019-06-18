@@ -37,7 +37,7 @@ public class ExceptionRecordEventHandler {
 
         if (shouldCreateCase) {
             // TODO: handle exceptions
-            String caseId = ccdClient.createCase(result.data, req.idamToken);
+            String caseId = ccdClient.createCase(req, result);
             return ok(caseId);
         } else {
             return errors(result.errors, result.warnings);
