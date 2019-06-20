@@ -23,6 +23,12 @@ deploy:
   skip_cleanup: true
   on:
     tags: true
+- provider: releases
+  api_key:
+    secure: fUIJ9A+T3p6hLc6IuL01iHB13vl+1VW2QT90A35VeVjkorFLFOl8IKcoWSG/VyF4kgvUfRSzzh1FozEleXekrh35/9YKJU5z+oyXmQvJ66sr0RoPf7IDRhkMCD71UFFj6iwDoVl9tuuLSA0QMhwoVsK6ZFzEgwUXaAmj3VCslLBqc1fL8jy7rxUFelenKL8Dv26Xgj6KBAYhBljbyNiWL+LNDLwYfkaQxs94DXvWJW+091eF2d9in+gvBAZlCulNd2IBxbFgQOMo0QzgP+AWsXnWyIl3E9eonsnkUxzVzCmSTQf1J0LsskZ4f6ANU4Hiby98B5sRo79ZIBpt4V8TDIeTELSyUms5+41xvcCMLLhFHW/f7zZuV0AzM5g0QoCh+iGykSKYdhBclTEzWrjKLDVqdLH4m9iY9HQf0eO6cQat3kI33ic9HiYkLNZKshFF5AoM83vVjmaauZsDM5O3rX9xQuas4OnL06w/BnQl0VXn5h+kME4XdEAfcVDm8NyLaV9Jl9CPLZZADn3WaVwgKe25rDG0LoDbhBhTfXHozPoDBKvF+gysp9GeSW9wY5dB6kGCq+pBJwMnnFJA74PAjzs9cgLWWBVVCKZiclp22dUZNwZTUsZD6CMM2kRlecg+qtOy6iMzY8SkT76JDTt2AXjI2ATgR1sLA0fu0Y6Ves0=
+  file_glob: true
+  file: build/libs/bulk-scan-ccd-event-handler-*.jar
+  skip_cleanup: true
 
 env:
   global:
