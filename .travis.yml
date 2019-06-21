@@ -1,30 +1,25 @@
 language: java
-
 before_cache:
 - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
 - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
-
 cache:
   directories:
-  - $HOME/.gradle/caches/
-  - $HOME/.gradle/wrapper/
-
+  - "$HOME/.gradle/caches/"
+  - "$HOME/.gradle/wrapper/"
 script:
-- ./gradlew test
-- if [ "$TRAVIS_EVENT_TYPE" == "cron" ]; then ./gradlew -DdependencyCheck.failBuild=true dependencyCheckAnalyze; fi
-
+- "./gradlew test"
+- if [ "$TRAVIS_EVENT_TYPE" == "cron" ]; then ./gradlew -DdependencyCheck.failBuild=true
+  dependencyCheckAnalyze; fi
 after_success:
-- ./gradlew jacocoTestReport
+- "./gradlew jacocoTestReport"
 - bash <(curl -s https://codecov.io/bash)
-
 deploy:
 - provider: script
-  script: ./gradlew bintrayUpload
+  script: "./gradlew bintrayUpload"
   skip_cleanup: true
   on:
     tags: true
     repo: hmcts/bulk-scan-ccd-event-handler-lib
-
 - provider: releases
   api_key:
     secure: ZjR72S9DGG5wI6NjCbTGLBepOzSahG2k5ss1N0PuCzxAlK3tCBzahBvsvUA04SNb8+OapBOzL9hCuPTlw2/6HbNfOi1GFqHbLJgU7ALXBlYcMW1ZInVRbO5FPKevMHrsxgut/3sJnHVHXoNY+PViEyBFQer8W+Ajq/PDppBpZj2I9iHq/ZxPxgMfVbEF4iJmEfLDQv82M4yIVSYiDUPNgP2BvAhpmafXt/hqv1DjWUvzIruM8xBpFAbCgmIjoATf7ewbaHN6gpJw1uarmQp0gvjUOm7uTtSxHICkrV0dhAJIYPnD8ji94yWSt2CjhxQsm4w6sfk6slg5HD4G+o2wPfUiEo4hGUHV7rqUX52Qq6Rj8TVIzDgc5UjxNVFea5mlISH59ffWdBVcT6b7wetpL2w52dGt6iflK6zUkBvmjWaCoZIJpsKD9CIa2Y2fzEPxbCgSjCyM9o0okNEx6MkhMcqwmsR7D/DmhDd93ozRUabd5jYhWfICxywQAu9r0fDSL6yRkhniHbXG5M9LqpS4XcbklRMJDHvQNsUAdNT6T5dkb8AZkyUR9QgEXGhsvyrC1waRhttZCCNEBFgJwjBcPsul3iiIx7MhWlCzbGv/aCbwStV8GqGjNDH2A5oIaI1R3zEtX5pTiZWFuEA8fBff+dL/AWYNPUAZzzJR/vfcX6Q=
@@ -34,8 +29,7 @@ deploy:
   on:
     repo: hmcts/bulk-scan-ccd-event-handler-lib
     tags: true
-
 env:
   global:
-  - secure: BbeRQZM7zzg5Z19mEREA56qmJWJ7MsZJAwfrZaEsIJuJcjC5wNplWSe+2WnDhfhkHxAg4uvQkuCACzQS70igl9CUzgKGUaGfMkbRZoCrA7jSvt2pKpiMkluymO/uPtY8uSN+jKAaZiGareW9U97doxrJpet+rnPthR/6zFHdT7hP8EaW8hmylfD2t0oSlYPmxk9mGe1vqHJbgWBrswLb4Ia/YRUpYo/4/xHnwKh5jmfSamBitR/pY9UFEjDZmJDJz0KW4VhYXy/4OVi8k2DfmKaN+Yw0c5uB0xFMb/ge9znDJtnKyREIyLToSWHrXF9ge/nAZ3ZTYpHBdfAGNoPlVXiul2UQ9hhGWOi+T/hPHXX2/GpbC344BO6NW+8ZwbGWftYItmBBg/dZex2mazS5hF0vKIQoGKaG8j63bAVetKY1ei9Zf+xUOST9LQHP1MGybXHWRMynruLnf6jldjyHAsTRDqaAW7XtP+Su53y+uAkg2v9FWGGk/UsuI0z9ujKqYQ+orSN2mlZmbAtGyjxxs7z5haDyZ56yUyL11bhrzoZuMwe4EXEqLW+8uQ0MLXOB/ot/To7iKZ8U4wHYjOIErxs6AoA8Qs01f68kB8i7ePfAnHWTzCWzy+m6pvHqd1eUhErquO4yHX/xBS5OmhW8F9z1x1Ns0Jmoph90JA12jXc=
-  - secure: VcSN0gcoRjPRj/8H8GlLI2pvb/hjbIise18lUAYHoidj+plSP+5y2ixEPrAG593iMqKJtIMKtK7cGq07bScbvI66HiCqIcKh55q2zYO/kK/tG4dwxrrD6mFypTGl0XKsmyay7c2gFhBxkb8EMX1u6jxc3X21qMics7X6LaAcjkR1U3HeZPcF/noFQUcswcxpH4KxUQ+ddsKFwJFnBukLzwaT0xAofLntJ5hXzzhn5dS6OpdLq0dV3rHcV9a1OPeQqNjjVLtPsoH/k08NGgEY8rytYA6S+vRSuNr0L+TyhbGUdIXyZUTWx1qlvkrtmLKCU4U0QCVB+KEc/ya5yr5IJCIui1OpDA5ktSb1anXCKKeXBJak3nikDK4ijdwE9q88+/kCINQYjZGnc5jNRbjMBa6pl406adXL7aILajy2tx9krVQP7nofuRX/VuvAn+ipulLD2pujdNNbARPZQDd8y+pCtzmSwKCK7v5iG4c2Wl8dZ09pWkRArId58VynC8d2cbQgniQ8N+hRL3FK+SSVkaBK8xr3KgeOaC3m/dIFsOLcO9l86SiDXU88C4RsethDWwWNpt2oxv7Z4ASMvdBQSEvi4/a7n+cAp3cPe4vo/vNziiabWsCCgeAz6X2tZvE8aGfUFCUMx6NWrnW5Qffr2hhqOaGVE8L3XIhaCFaGD6o=
+  - secure: lS8KuY/oVcWoYvjHCDEeEUBhU+Sz5dgEv61KnKw2uZtdFe2vpQi9dY3fO37Yzh4pUB3tmO5G0p7XfYrIq9j3G742N2o7ehPC0UwbTlCmuix9cIcRBaV3wX5Smn8niaR++10wFRNn0qsGVg5/isNLVlKeBDF+j6xf2lnRvedcdDgpKbw1YpFVtAdOg4rRtJjS8rbYuhE8HPoQEeRHz2Zv4fNNQQK3fEtP5Na5v7MWTOzOmFK/lm7BZ3kqwJbKd8GdArdIM7LJlVD5rLHrhgniJ8VpvpZlUEiCsbY8WqWe4WiljtGGM6MURPa0glEUvCQ5UqIsPOY4wXaO8H1YGBTafaC2hCj26pgr/A4gdWjsG3IknKRZgBlGCMERWmxv+1+vS36n1faJOXtdBmHjFYsN9VELVDDoAYJTzUoROQoF70Y/QunkKOJwu0MDl14pVm7hnwoyO4i6fACjDFlZYZukhCzWNqHnGbFml6DFMdJSF3vETZaPIE87cEgNjsXNuTV0nBjziN4CWr3Pi5LLnH3QmDSoApgWc4K1KtyZtsQVHHiZYm37i/oPjEYXX9SismsEdiAuDsr5VgpPQNqG76Ug5UZIxQvZDjh7wLVcUaqPUQOdgYFSHlI+EHJMD04zuq3noqLbia/h+NLhZa+ulNM2c5IQctcv1vP9B8Tod8zFfkg=
+  - secure: EwES06LogP5agqI7mf3Z9E8PQPCzQi3IVZ1Gc9Cenjd1WlDNbVvQupXP6D1gTeUbvLSgfV0JImN8R46Ieplnk+hRgnwVm5J3Jt660SjlHhGuhBwLWZ6KVjE2f0xwY4r2o0/QAHKCnAbGsa3k0576h0jwQy+9wcpoScdk2YeBCmZWAOtTRKTMYrNwZyy0A7Kp6AocrzgfWD7NrsxN/yo8I4n1dwHs+jQnga2OTSwxXigGgi0zf8Pxne8IXUh/WSrUVhLpzRwZQA7dxqE5yw70yVRmoNYHS/93aj6tGWl/Z/in9dwDY+Aq8JAfKnTyV8j52sdT+CoWs+RrYCW+t6pGGXRdOBedJI/koSL63V1YieuqxkFoZLoTDZdrhSYCTAiEvbijRAwQEqBAnHf246DcMgpM4ee8yI9f2PRgydw7A5iD+hIokwETip6Vwo12Nd1JRKRtJxcsG7Hl8Alr2hfKzpJCa7veuN4g6cyBparuuHmlPjN7fOIMVrDy1VIUX0FplLSUO42q/GR1v6G7xYtMbuUlf8c6jmV5QoicFm06vrDA82XG/TtBtMcHtWLYzyGxTJi+8crggpegmaYphMYeXAkxue17VLP6P5GQMjuJ4HGQp8+a3d0AEuKkTT9zBgGiT9G2tMSWjC29hEaM2Yz1l5/TO+JcQRJEcBbi43QXEYg=
