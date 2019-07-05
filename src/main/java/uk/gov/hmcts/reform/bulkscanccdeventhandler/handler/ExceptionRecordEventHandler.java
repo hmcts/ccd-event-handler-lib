@@ -5,6 +5,7 @@ import uk.gov.hmcts.reform.bulkscanccdeventhandler.handler.model.CaseCreationReq
 import uk.gov.hmcts.reform.bulkscanccdeventhandler.handler.model.CaseCreationResult;
 import uk.gov.hmcts.reform.bulkscanccdeventhandler.handler.validation.CaseCreationRequestValidator;
 import uk.gov.hmcts.reform.bulkscanccdeventhandler.transformer.ExceptionRecordToCaseTransformer;
+import uk.gov.hmcts.reform.bulkscanccdeventhandler.transformer.model.OkTransformationResult;
 import uk.gov.hmcts.reform.bulkscanccdeventhandler.transformer.model.TransformationResult;
 
 import java.util.List;
@@ -33,12 +34,13 @@ public class ExceptionRecordEventHandler {
         validator.validate(req);
         TransformationResult result = transformer.transform(req.exceptionRecord);
 
-        boolean shouldCreateCase = result.errors.isEmpty() && (result.warnings.isEmpty() || req.ignoreWarnings);
-
-        if (shouldCreateCase) {
-            // TODO: handle exceptions
-            String caseId = ccdClient.createCase(req, result);
-            return ok(caseId);
+        if (result instanceof OkTransformationResult) {
+            if (result.warnings.isEmpty() || req.ignoreWarnings) {
+                String caseId = ccdClient.createCase(req, (OkTransformationResult) result);
+                return ok(caseId);
+            } else {
+                return errors(emptyList(), result.warnings);
+            }
         } else {
             return errors(result.errors, result.warnings);
         }

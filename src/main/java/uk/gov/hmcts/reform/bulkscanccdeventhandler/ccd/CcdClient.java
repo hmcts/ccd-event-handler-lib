@@ -8,6 +8,7 @@ import uk.gov.hmcts.reform.bulkscanccdeventhandler.ccd.api.model.CaseDataResp;
 import uk.gov.hmcts.reform.bulkscanccdeventhandler.ccd.api.model.Event;
 import uk.gov.hmcts.reform.bulkscanccdeventhandler.ccd.api.model.StartEventResponse;
 import uk.gov.hmcts.reform.bulkscanccdeventhandler.handler.model.CaseCreationRequest;
+import uk.gov.hmcts.reform.bulkscanccdeventhandler.transformer.model.OkTransformationResult;
 import uk.gov.hmcts.reform.bulkscanccdeventhandler.transformer.model.TransformationResult;
 
 import java.util.function.Supplier;
@@ -26,7 +27,7 @@ public class CcdClient {
     }
     // endregion
 
-    public String createCase(CaseCreationRequest req, TransformationResult tr) {
+    public String createCase(CaseCreationRequest req, OkTransformationResult tr) {
         log.info("Starting CCD event. CaseType: {}, EventId: {}", tr.caseTypeId, tr.eventId);
 
         StartEventResponse startEventResponse = null;

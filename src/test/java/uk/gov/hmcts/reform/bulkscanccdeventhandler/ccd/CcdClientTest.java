@@ -12,6 +12,7 @@ import uk.gov.hmcts.reform.bulkscanccdeventhandler.ccd.api.model.CaseDataReq;
 import uk.gov.hmcts.reform.bulkscanccdeventhandler.ccd.api.model.CaseDataResp;
 import uk.gov.hmcts.reform.bulkscanccdeventhandler.ccd.api.model.StartEventResponse;
 import uk.gov.hmcts.reform.bulkscanccdeventhandler.handler.model.CaseCreationRequest;
+import uk.gov.hmcts.reform.bulkscanccdeventhandler.transformer.model.OkTransformationResult;
 import uk.gov.hmcts.reform.bulkscanccdeventhandler.transformer.model.TransformationResult;
 
 import java.util.function.Supplier;
@@ -43,7 +44,7 @@ public class CcdClientTest {
     public void should_call_api_with_correct_params() {
         // given
         CaseCreationRequest req = caseCreationRequest();
-        TransformationResult tr = okResult();
+        OkTransformationResult tr = okResult();
         String s2s = "s2s-token";
         given(s2sTokenSupplier.get())
             .willReturn(s2s);
