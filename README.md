@@ -32,6 +32,9 @@ to it:
 
 The handler will create a case in CCD for you and return the ID of the new case.
 
+You can check a sample implementation in
+[this](https://github.com/hmcts/bulk-scan-ccd-event-handler-sample-app) repository.
+
 ## Developing
 
 ### Prerequisites

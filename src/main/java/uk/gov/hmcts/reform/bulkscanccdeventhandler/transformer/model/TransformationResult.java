@@ -2,7 +2,7 @@ package uk.gov.hmcts.reform.bulkscanccdeventhandler.transformer.model;
 
 import java.util.List;
 
-public class TransformationResult {
+public abstract class TransformationResult {
 
     /**
      * Warnings that occurred during case mapping or validation.

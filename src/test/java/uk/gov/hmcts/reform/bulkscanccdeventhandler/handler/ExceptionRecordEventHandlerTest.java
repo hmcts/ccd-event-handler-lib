@@ -11,7 +11,7 @@ import uk.gov.hmcts.reform.bulkscanccdeventhandler.handler.model.CaseCreationRes
 import uk.gov.hmcts.reform.bulkscanccdeventhandler.handler.validation.CaseCreationRequestValidator;
 import uk.gov.hmcts.reform.bulkscanccdeventhandler.testutils.sampledata.SampleCaseCreationRequest;
 import uk.gov.hmcts.reform.bulkscanccdeventhandler.transformer.ExceptionRecordToCaseTransformer;
-import uk.gov.hmcts.reform.bulkscanccdeventhandler.transformer.model.TransformationResult;
+import uk.gov.hmcts.reform.bulkscanccdeventhandler.transformer.model.OkTransformationResult;
 
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -43,7 +43,7 @@ public class ExceptionRecordEventHandlerTest {
     public void should_handle_successful_transformation_result() {
         // given
         CaseCreationRequest req = SampleCaseCreationRequest.caseCreationRequest();
-        TransformationResult transformationResult = okResult();
+        OkTransformationResult transformationResult = okResult();
 
         given(ccdClient.createCase(any(), any())).willReturn("new-case-id");
         given(transformer.transform(req.exceptionRecord)).willReturn(transformationResult);
@@ -106,7 +106,7 @@ public class ExceptionRecordEventHandlerTest {
         // given
         CaseCreationRequest req = caseCreationRequest(true); // ignore warnings
 
-        TransformationResult transformationResult = warningResult(asList("warn1", "warn2"));
+        OkTransformationResult transformationResult = warningResult(asList("warn1", "warn2"));
 
         given(ccdClient.createCase(any(), any())).willReturn("new-case-id");
         given(transformer.transform(req.exceptionRecord)).willReturn(transformationResult);
