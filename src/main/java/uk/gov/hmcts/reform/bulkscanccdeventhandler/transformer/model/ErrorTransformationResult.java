@@ -2,12 +2,20 @@ package uk.gov.hmcts.reform.bulkscanccdeventhandler.transformer.model;
 
 import java.util.List;
 
-public class ErrorTransformationResult extends TransformationResult {
+public class ErrorTransformationResult implements TransformationResult {
 
-    public ErrorTransformationResult(
-        List<String> warnings,
-        List<String> errors
-    ) {
-        super(warnings, errors, null, null, null, null);
+    /**
+     * Warnings that occurred during case mapping or validation.
+     */
+    public final List<String> warnings;
+
+    /**
+     * Errors that occurred during case mapping or validation.
+     */
+    public final List<String> errors;
+
+    public ErrorTransformationResult(List<String> warnings, List<String> errors) {
+        this.warnings = warnings;
+        this.errors = errors;
     }
 }

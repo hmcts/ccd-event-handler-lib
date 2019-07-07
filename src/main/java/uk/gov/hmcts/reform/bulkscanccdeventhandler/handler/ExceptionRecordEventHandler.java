@@ -5,6 +5,7 @@ import uk.gov.hmcts.reform.bulkscanccdeventhandler.handler.model.CaseCreationReq
 import uk.gov.hmcts.reform.bulkscanccdeventhandler.handler.model.CaseCreationResult;
 import uk.gov.hmcts.reform.bulkscanccdeventhandler.handler.validation.CaseCreationRequestValidator;
 import uk.gov.hmcts.reform.bulkscanccdeventhandler.transformer.ExceptionRecordToCaseTransformer;
+import uk.gov.hmcts.reform.bulkscanccdeventhandler.transformer.model.ErrorTransformationResult;
 import uk.gov.hmcts.reform.bulkscanccdeventhandler.transformer.model.OkTransformationResult;
 import uk.gov.hmcts.reform.bulkscanccdeventhandler.transformer.model.TransformationResult;
 
@@ -35,14 +36,18 @@ public class ExceptionRecordEventHandler {
         TransformationResult result = transformer.transform(req.exceptionRecord);
 
         if (result instanceof OkTransformationResult) {
-            if (result.warnings.isEmpty() || req.ignoreWarnings) {
-                String caseId = ccdClient.createCase(req, (OkTransformationResult) result);
+            OkTransformationResult okResult = (OkTransformationResult) result;
+            if (okResult.warnings.isEmpty() || req.ignoreWarnings) {
+                String caseId = ccdClient.createCase(req, okResult);
                 return ok(caseId);
             } else {
-                return errors(emptyList(), result.warnings);
+                return errors(emptyList(), okResult.warnings);
             }
+        } else if (result instanceof ErrorTransformationResult) {
+            ErrorTransformationResult errorResult = (ErrorTransformationResult) result;
+            return errors(errorResult.errors, errorResult.warnings);
         } else {
-            return errors(result.errors, result.warnings);
+            throw new RuntimeException();
         }
     }
 
