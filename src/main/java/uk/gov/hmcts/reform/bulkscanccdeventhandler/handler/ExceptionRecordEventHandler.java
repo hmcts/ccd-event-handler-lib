@@ -11,6 +11,7 @@ import uk.gov.hmcts.reform.bulkscanccdeventhandler.transformer.model.OkTransform
 import uk.gov.hmcts.reform.bulkscanccdeventhandler.transformer.model.TransformationResult;
 
 import java.util.List;
+import java.util.function.Function;
 
 import static java.util.Collections.emptyList;
 
@@ -34,19 +35,30 @@ public class ExceptionRecordEventHandler {
 
     public CaseCreationResult handle(CaseCreationRequest req) {
         validator.validate(req);
-        TransformationResult result = transformer.transform(req.exceptionRecord);
 
+        return handleTransformationResult(
+            transformer.transform(req.exceptionRecord),
+            okRes -> {
+                if (okRes.warnings.isEmpty() || req.ignoreWarnings) {
+                    String caseId = ccdClient.createCase(req, okRes);
+                    return ok(caseId);
+                } else {
+                    return errors(emptyList(), okRes.warnings);
+                }
+            },
+            errRes -> errors(errRes.errors, errRes.warnings)
+        );
+    }
+
+    private CaseCreationResult handleTransformationResult(
+        TransformationResult result,
+        Function<OkTransformationResult, CaseCreationResult> okAction,
+        Function<ErrorTransformationResult, CaseCreationResult> errorAction
+    ) {
         if (result instanceof OkTransformationResult) {
-            OkTransformationResult okResult = (OkTransformationResult) result;
-            if (okResult.warnings.isEmpty() || req.ignoreWarnings) {
-                String caseId = ccdClient.createCase(req, okResult);
-                return ok(caseId);
-            } else {
-                return errors(emptyList(), okResult.warnings);
-            }
+            return okAction.apply((OkTransformationResult) result);
         } else if (result instanceof ErrorTransformationResult) {
-            ErrorTransformationResult errorResult = (ErrorTransformationResult) result;
-            return errors(errorResult.errors, errorResult.warnings);
+            return errorAction.apply((ErrorTransformationResult) result);
         } else {
             throw new InvalidTransformationResultTypeException();
         }
