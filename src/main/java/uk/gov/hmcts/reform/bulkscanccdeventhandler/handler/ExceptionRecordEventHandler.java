@@ -50,17 +50,17 @@ public class ExceptionRecordEventHandler {
         );
     }
 
-    private CaseCreationResult handleTransformationResult(
+    private <T> T handleTransformationResult(
         TransformationResult result,
-        Function<OkTransformationResult, CaseCreationResult> okAction,
-        Function<ErrorTransformationResult, CaseCreationResult> errorAction
+        Function<OkTransformationResult, T> okAction,
+        Function<ErrorTransformationResult, T> errorAction
     ) {
         if (result instanceof OkTransformationResult) {
             return okAction.apply((OkTransformationResult) result);
         } else if (result instanceof ErrorTransformationResult) {
             return errorAction.apply((ErrorTransformationResult) result);
         } else {
-            throw new InvalidTransformationResultTypeException();
+            throw new InvalidTransformationResultTypeException(); // TODO: add message
         }
     }
 
