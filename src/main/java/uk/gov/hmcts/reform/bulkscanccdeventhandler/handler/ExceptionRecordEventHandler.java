@@ -2,6 +2,7 @@ package uk.gov.hmcts.reform.bulkscanccdeventhandler.handler;
 
 import uk.gov.hmcts.reform.bulkscanccdeventhandler.ccd.CcdClient;
 import uk.gov.hmcts.reform.bulkscanccdeventhandler.handler.exceptions.InvalidTransformationResultTypeException;
+import uk.gov.hmcts.reform.bulkscanccdeventhandler.handler.exceptions.TransformationException;
 import uk.gov.hmcts.reform.bulkscanccdeventhandler.handler.model.CaseCreationRequest;
 import uk.gov.hmcts.reform.bulkscanccdeventhandler.handler.model.CaseCreationResult;
 import uk.gov.hmcts.reform.bulkscanccdeventhandler.handler.validation.CaseCreationRequestValidator;
@@ -36,8 +37,15 @@ public class ExceptionRecordEventHandler {
     public CaseCreationResult handle(CaseCreationRequest req) {
         validator.validate(req);
 
+        final TransformationResult result;
+        try {
+            result = transformer.transform(req.exceptionRecord);
+        } catch (Exception exc) {
+            throw new TransformationException("Error while calling provided transformer", exc);
+        }
+
         return handleTransformationResult(
-            transformer.transform(req.exceptionRecord),
+            result,
             okRes -> {
                 if (okRes.warnings.isEmpty() || req.ignoreWarnings) {
                     // TODO: handle exceptions
