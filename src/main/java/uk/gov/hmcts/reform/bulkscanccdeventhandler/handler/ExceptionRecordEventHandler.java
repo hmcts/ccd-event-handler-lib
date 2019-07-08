@@ -1,13 +1,17 @@
 package uk.gov.hmcts.reform.bulkscanccdeventhandler.handler;
 
 import uk.gov.hmcts.reform.bulkscanccdeventhandler.ccd.CcdClient;
+import uk.gov.hmcts.reform.bulkscanccdeventhandler.handler.exceptions.InvalidTransformationResultTypeException;
 import uk.gov.hmcts.reform.bulkscanccdeventhandler.handler.model.CaseCreationRequest;
 import uk.gov.hmcts.reform.bulkscanccdeventhandler.handler.model.CaseCreationResult;
 import uk.gov.hmcts.reform.bulkscanccdeventhandler.handler.validation.CaseCreationRequestValidator;
 import uk.gov.hmcts.reform.bulkscanccdeventhandler.transformer.ExceptionRecordToCaseTransformer;
+import uk.gov.hmcts.reform.bulkscanccdeventhandler.transformer.model.ErrorTransformationResult;
+import uk.gov.hmcts.reform.bulkscanccdeventhandler.transformer.model.OkTransformationResult;
 import uk.gov.hmcts.reform.bulkscanccdeventhandler.transformer.model.TransformationResult;
 
 import java.util.List;
+import java.util.function.Function;
 
 import static java.util.Collections.emptyList;
 
@@ -31,16 +35,33 @@ public class ExceptionRecordEventHandler {
 
     public CaseCreationResult handle(CaseCreationRequest req) {
         validator.validate(req);
-        TransformationResult result = transformer.transform(req.exceptionRecord);
 
-        boolean shouldCreateCase = result.errors.isEmpty() && (result.warnings.isEmpty() || req.ignoreWarnings);
+        return handleTransformationResult(
+            transformer.transform(req.exceptionRecord),
+            okRes -> {
+                if (okRes.warnings.isEmpty() || req.ignoreWarnings) {
+                    // TODO: handle exceptions
+                    String caseId = ccdClient.createCase(req, okRes);
+                    return ok(caseId);
+                } else {
+                    return errors(emptyList(), okRes.warnings);
+                }
+            },
+            errRes -> errors(errRes.errors, errRes.warnings)
+        );
+    }
 
-        if (shouldCreateCase) {
-            // TODO: handle exceptions
-            String caseId = ccdClient.createCase(req, result);
-            return ok(caseId);
+    private <T> T handleTransformationResult(
+        TransformationResult result,
+        Function<OkTransformationResult, T> okAction,
+        Function<ErrorTransformationResult, T> errorAction
+    ) {
+        if (result instanceof OkTransformationResult) {
+            return okAction.apply((OkTransformationResult) result);
+        } else if (result instanceof ErrorTransformationResult) {
+            return errorAction.apply((ErrorTransformationResult) result);
         } else {
-            return errors(result.errors, result.warnings);
+            throw new InvalidTransformationResultTypeException("Invalid type: " + result.getClass().getName());
         }
     }
 
