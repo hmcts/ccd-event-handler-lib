@@ -38,7 +38,7 @@ public class ExceptionRecordEventHandler {
      * Tries converting CCD Exception Record from passed request to a case and creates a case in CCD if it succeeded.
      *
      * @param req CCD case creation request.
-     * @return result of creating a case in CCD.
+     * @return Result of creating a case in CCD.
      */
     public CaseCreationResult handle(CaseCreationRequest req) {
         validator.validate(req);

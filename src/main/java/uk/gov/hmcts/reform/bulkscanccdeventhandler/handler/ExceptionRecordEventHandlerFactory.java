@@ -21,12 +21,12 @@ public final class ExceptionRecordEventHandlerFactory {
     }
 
     /**
-     * Creates and instance of ExceptionRecordEventHandler based on parameters provided.
+     * Creates an instance of ExceptionRecordEventHandler based on parameters provided.
      *
      * @param transformer      Transformer that should be used when converting CCD Exception Record to a case.
      * @param ccdUrl           Base URL to CCD.
-     * @param s2sTokenSupplier function returning your service's s2s token. It will be used when creating a case in CCD.
-     * @return an instance of ExceptionRecordEventHandler
+     * @param s2sTokenSupplier Function returning your service's s2s token. It will be used when creating a case in CCD.
+     * @return An instance of ExceptionRecordEventHandler
      */
     public static ExceptionRecordEventHandler getHandler(
         ExceptionRecordToCaseTransformer transformer,
