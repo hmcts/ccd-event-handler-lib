@@ -40,6 +40,7 @@ public class ExceptionRecordEventHandler {
             transformer.transform(req.exceptionRecord),
             okRes -> {
                 if (okRes.warnings.isEmpty() || req.ignoreWarnings) {
+                    // TODO: handle exceptions
                     String caseId = ccdClient.createCase(req, okRes);
                     return ok(caseId);
                 } else {
@@ -60,7 +61,7 @@ public class ExceptionRecordEventHandler {
         } else if (result instanceof ErrorTransformationResult) {
             return errorAction.apply((ErrorTransformationResult) result);
         } else {
-            throw new InvalidTransformationResultTypeException(); // TODO: add message
+            throw new InvalidTransformationResultTypeException("Invalid type: " + result.getClass().getName());
         }
     }
 
