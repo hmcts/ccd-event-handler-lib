@@ -41,7 +41,10 @@ public class ExceptionRecordEventHandler {
         try {
             result = transformer.transform(req.exceptionRecord);
         } catch (Exception exc) {
-            throw new TransformationException("Error while calling provided transformer", exc);
+            throw new TransformationException(
+                "Provided transformer threw an exception when transforming exception record to a case. See cause for details",
+                exc
+            );
         }
 
         return handleTransformationResult(
