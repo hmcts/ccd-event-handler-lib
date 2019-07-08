@@ -42,7 +42,8 @@ public class ExceptionRecordEventHandler {
             result = transformer.transform(req.exceptionRecord);
         } catch (Exception exc) {
             throw new TransformationException(
-                "Provided transformer threw an exception when transforming exception record to a case. See cause for details",
+                "Provided transformer threw an exception when transforming exception record to a case. "
+                    + "See cause for details.",
                 exc
             );
         }
