@@ -6,6 +6,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.hmcts.reform.bulkscanccdeventhandler.ccd.CcdClient;
+import uk.gov.hmcts.reform.bulkscanccdeventhandler.handler.exceptions.TransformationException;
 import uk.gov.hmcts.reform.bulkscanccdeventhandler.handler.model.CaseCreationRequest;
 import uk.gov.hmcts.reform.bulkscanccdeventhandler.handler.model.CaseCreationResult;
 import uk.gov.hmcts.reform.bulkscanccdeventhandler.handler.validation.CaseCreationRequestValidator;
@@ -15,6 +16,7 @@ import uk.gov.hmcts.reform.bulkscanccdeventhandler.transformer.model.OkTransform
 
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.never;
@@ -133,5 +135,21 @@ public class ExceptionRecordEventHandlerTest {
 
         // then
         verify(validator).validate(req);
+    }
+
+    @Test
+    void should_throw_custom_exception_when_provided_transformer_fails() {
+        // given
+        CaseCreationRequest req = SampleCaseCreationRequest.caseCreationRequest();
+        RuntimeException cause = new RuntimeException();
+        given(transformer.transform(req.exceptionRecord)).willThrow(cause);
+
+        // when
+        Throwable exc = catchThrowable(() -> handler.handle(req));
+
+        //then
+        assertThat(exc)
+            .isInstanceOf(TransformationException.class)
+            .hasCause(cause);
     }
 }
