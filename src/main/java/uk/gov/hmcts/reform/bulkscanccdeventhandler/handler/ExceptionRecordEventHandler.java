@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.bulkscanccdeventhandler.handler;
 
+import io.vavr.control.Try;
 import uk.gov.hmcts.reform.bulkscanccdeventhandler.ccd.CcdClient;
 import uk.gov.hmcts.reform.bulkscanccdeventhandler.handler.exceptions.InvalidTransformationResultTypeException;
 import uk.gov.hmcts.reform.bulkscanccdeventhandler.handler.exceptions.TransformationException;
@@ -43,30 +44,26 @@ public class ExceptionRecordEventHandler {
     public CaseCreationResult handle(CaseCreationRequest req) {
         validator.validate(req);
 
-        final TransformationResult result;
-        try {
-            result = transformer.transform(req.exceptionRecord);
-        } catch (Exception exc) {
-            throw new TransformationException(
-                "Provided transformer threw an exception when transforming exception record to a case. "
-                    + "See cause for details.",
+        return Try
+            .of(() -> transformer.transform(req.exceptionRecord))
+            .map(result -> handleTransformationResult(
+                result,
+                okRes -> {
+                    if (okRes.warnings.isEmpty() || req.ignoreWarnings) {
+                        // TODO: handle exceptions
+                        String caseId = ccdClient.createCase(req, okRes);
+                        return ok(caseId);
+                    } else {
+                        return errors(emptyList(), okRes.warnings);
+                    }
+                },
+                errRes -> errors(errRes.errors, errRes.warnings)
+            ))
+            .getOrElseThrow(exc -> new TransformationException(
+                "Provided transformer threw an exception when converting exception record to a case. "
+                    + "See cause for details",
                 exc
-            );
-        }
-
-        return handleTransformationResult(
-            result,
-            okRes -> {
-                if (okRes.warnings.isEmpty() || req.ignoreWarnings) {
-                    // TODO: handle exceptions
-                    String caseId = ccdClient.createCase(req, okRes);
-                    return ok(caseId);
-                } else {
-                    return errors(emptyList(), okRes.warnings);
-                }
-            },
-            errRes -> errors(errRes.errors, errRes.warnings)
-        );
+            ));
     }
 
     private <T> T handleTransformationResult(
