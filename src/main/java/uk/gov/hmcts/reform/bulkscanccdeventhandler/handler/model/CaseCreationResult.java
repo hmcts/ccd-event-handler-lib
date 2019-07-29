@@ -13,4 +13,8 @@ public class CaseCreationResult {
         this.errors = errors;
         this.warnings = warnings;
     }
+
+    public boolean isCaseCreated() {
+        return caseId != null;
+    }
 }

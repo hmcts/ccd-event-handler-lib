@@ -54,6 +54,7 @@ public class ExceptionRecordEventHandlerTest {
         CaseCreationResult result = handler.handle(req);
 
         // then
+        assertThat(result.isCaseCreated()).isTrue();
         assertThat(result.caseId).isEqualTo("new-case-id");
         assertThat(result.errors).isEmpty();
         assertThat(result.warnings).isEmpty();
@@ -75,6 +76,7 @@ public class ExceptionRecordEventHandlerTest {
         CaseCreationResult result = handler.handle(req);
 
         // then
+        assertThat(result.isCaseCreated()).isFalse();
         assertThat(result.caseId).isNull();
         assertThat(result.errors).containsExactly("err1", "err2");
         assertThat(result.warnings).containsExactly("warn1", "warn2");
@@ -96,6 +98,7 @@ public class ExceptionRecordEventHandlerTest {
         CaseCreationResult result = handler.handle(req);
 
         // then
+        assertThat(result.isCaseCreated()).isFalse();
         assertThat(result.caseId).isNull();
         assertThat(result.errors).isEmpty();
         assertThat(result.warnings).containsExactly("warn1", "warn2");
@@ -117,6 +120,7 @@ public class ExceptionRecordEventHandlerTest {
         CaseCreationResult result = handler.handle(req);
 
         // then
+        assertThat(result.isCaseCreated()).isTrue();
         assertThat(result.caseId).isEqualTo("new-case-id");
         assertThat(result.errors).isEmpty();
         assertThat(result.warnings).isEmpty(); // warnings removed!
