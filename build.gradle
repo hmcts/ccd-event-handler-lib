@@ -6,7 +6,7 @@ plugins {
     id 'checkstyle'
     id 'pmd'
     id 'jacoco'
-    id 'org.owasp.dependencycheck' version '5.2.0'
+    id 'org.owasp.dependencycheck' version '5.2.1'
 }
 
 group 'uk.gov.hmcts.reform'
