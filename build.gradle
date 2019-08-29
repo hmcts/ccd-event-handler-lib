@@ -23,7 +23,7 @@ ext.versions = [
 ]
 
 dependencies {
-    implementation group: 'com.google.guava', name: 'guava', version: '28.0-jre'
+    implementation group: 'com.google.guava', name: 'guava', version: '28.1-jre'
     implementation group: 'io.github.openfeign', name: 'feign-jackson', version: '10.3.0'
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: versions.jackson
     implementation group: 'org.hibernate', name: 'hibernate-validator', version: '6.0.17.Final'
