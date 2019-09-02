@@ -1,6 +1,7 @@
 package uk.gov.hmcts.reform.bulkscanccdeventhandler.ccd;
 
 import feign.FeignException.InternalServerError;
+import feign.Request;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,6 +15,7 @@ import uk.gov.hmcts.reform.bulkscanccdeventhandler.ccd.api.model.StartEventRespo
 import uk.gov.hmcts.reform.bulkscanccdeventhandler.handler.model.CaseCreationRequest;
 import uk.gov.hmcts.reform.bulkscanccdeventhandler.transformer.model.OkTransformationResult;
 
+import java.util.Collections;
 import java.util.function.Supplier;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -90,7 +92,8 @@ public class CcdClientTest {
     @Test
     public void should_handle_exceptions_when_starting_a_ccd_event() {
         // given
-        InternalServerError error = new InternalServerError("error", null);
+        Request request = Request.create(Request.HttpMethod.GET, "/", Collections.emptyMap(), null);
+        InternalServerError error = new InternalServerError("error", request, null);
         given(api.startEvent(any(), any(), any(), any(), any(), any())).willThrow(error);
 
         // when
@@ -106,7 +109,8 @@ public class CcdClientTest {
     @Test
     public void should_handle_exceptions_when_submitting_a_ccd_event() {
         // given
-        InternalServerError error = new InternalServerError("error", null);
+        Request request = Request.create(Request.HttpMethod.GET, "/", Collections.emptyMap(), null);
+        InternalServerError error = new InternalServerError("error", request, null);
         given(api.startEvent(any(), any(), any(), any(), any(), any()))
             .willReturn(new StartEventResponse("token"));
         given(api.submitEvent(any(), any(), any(), any(), any(), any(), anyBoolean()))
